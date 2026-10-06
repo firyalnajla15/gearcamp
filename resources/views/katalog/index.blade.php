@@ -261,6 +261,21 @@
             color: rgba(255, 255, 255, 0.65);
             font-size: 14px;
         }
+
+        /* Filter Button */
+        .btn-filter {
+            background: #1f4d3a;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-weight: 600;
+        }
+
+        .btn-filter:hover {
+            background: #163b2c;
+            color: white;
+        }
     </style>
 </head>
 
@@ -277,7 +292,9 @@
 
             <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNav">
+
                 <span class="navbar-toggler-icon"></span>
+
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -310,10 +327,15 @@
 
                 </ul>
 
-                <a href="#" class="btn-cart">
+                <a href="{{ route('cart.index') }}" class="btn-cart">
+
                     <i class="fa-solid fa-cart-shopping"></i>
                     Keranjang
-                    <span class="badge bg-success ms-1">0</span>
+
+                    <span class="badge bg-success ms-1">
+                        {{ count(session('cart', [])) }}
+                    </span>
+
                 </a>
 
             </div>
@@ -344,55 +366,50 @@
 
         <div class="filter-box">
 
-            <div class="row g-3">
+            <form action="{{ url('/katalog') }}" method="GET">
 
-                <div class="col-md-8">
+                <div class="row g-3">
 
-                    <div class="input-group">
+                    <!-- SEARCH -->
+                    <div class="col-md-8">
 
-                        <span class="input-group-text bg-white">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </span>
+                        <div class="input-group">
 
-                        <input type="text" class="form-control" placeholder="Cari perlengkapan camping...">
+                            <span class="input-group-text bg-white">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+
+                            <input type="text" name="search" value="{{ request('search') }}" class="form-control"
+                                placeholder="Cari perlengkapan camping...">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CATEGORY -->
+                    <div class="col-md-4">
+
+                        <select name="kategori" class="form-select" onchange="this.form.submit()">
+
+                            <option value="">
+                                Semua Kategori
+                            </option>
+
+                            @foreach ($kategori as $itemKategori)
+                                <option value="{{ $itemKategori }}"
+                                    {{ request('kategori') == $itemKategori ? 'selected' : '' }}>
+                                    {{ $itemKategori }}
+                                </option>
+                            @endforeach
+
+                        </select>
 
                     </div>
 
                 </div>
 
-                <div class="col-md-4">
-
-                    <select class="form-select">
-
-                        <option selected>
-                            Semua Kategori
-                        </option>
-
-                        <option>
-                            Tenda
-                        </option>
-
-                        <option>
-                            Tas & Carrier
-                        </option>
-
-                        <option>
-                            Sleeping Bag
-                        </option>
-
-                        <option>
-                            Peralatan Masak
-                        </option>
-
-                        <option>
-                            Peralatan Outdoor
-                        </option>
-
-                    </select>
-
-                </div>
-
-            </div>
+            </form>
 
         </div>
 
@@ -409,11 +426,22 @@
                 <div>
 
                     <h3 class="fw-bold mb-1">
-                        Perlengkapan Camping
+                        @if (request('kategori'))
+                            Kategori: {{ request('kategori') }}
+                        @else
+                            Perlengkapan Camping
+                        @endif
                     </h3>
 
                     <p class="text-muted mb-0">
-                        Pilih perlengkapan yang kamu butuhkan.
+
+                        @if (request('kategori'))
+                            Menampilkan perlengkapan kategori
+                            <strong>{{ request('kategori') }}</strong>.
+                        @else
+                            Pilih perlengkapan yang kamu butuhkan.
+                        @endif
+
                     </p>
 
                 </div>
@@ -474,6 +502,7 @@
 
                                     @if ($item->stok > 0)
                                         <i class="fa-solid fa-box"></i>
+
                                         Stok tersedia:
                                         <strong>{{ $item->stok }}</strong>
                                     @else
@@ -491,18 +520,26 @@
                                 <!-- BUTTON -->
                                 <div class="d-flex gap-2">
 
-                                    <a href="{{ route('katalog.show', $item->id) }}" class="btn btn-outline-dark">
+                                    <a href="{{ route('katalog.show', $item->id) }}" class="btn-detail flex-fill">
+
                                         <i class="fa-solid fa-eye me-1"></i>
                                         Lihat Detail
+
                                     </a>
 
-                                    <button type="button" class="btn-add-cart flex-fill"
-                                        {{ $item->stok <= 0 ? 'disabled' : '' }}>
 
-                                        <i class="fa-solid fa-cart-plus"></i>
-                                        Add to Cart
+                                    <form action="{{ route('cart.add', $item->id) }}" method="POST" class="flex-fill">
+                                        @csrf
 
-                                    </button>
+                                        <button type="submit" class="btn-add-cart w-100"
+                                            {{ $item->stok <= 0 ? 'disabled' : '' }}>
+
+                                            <i class="fa-solid fa-cart-plus"></i>
+                                            Add to Cart
+
+                                        </button>
+
+                                    </form>
 
                                 </div>
 
@@ -514,7 +551,7 @@
 
                 @empty
 
-                    <!-- JIKA DATABASE MASIH KOSONG -->
+                    <!-- JIKA TIDAK ADA BARANG -->
                     <div class="col-12">
 
                         <div class="empty-box">
@@ -522,13 +559,34 @@
                             <i class="fa-solid fa-box-open fa-4x"></i>
 
                             <h4>
-                                Belum Ada Barang
+                                @if (request('kategori'))
+                                    Barang Tidak Ditemukan
+                                @else
+                                    Belum Ada Barang
+                                @endif
                             </h4>
 
                             <p>
-                                Saat ini belum ada perlengkapan camping
-                                yang tersedia di katalog.
+
+                                @if (request('kategori'))
+                                    Belum ada barang untuk kategori
+                                    <strong>{{ request('kategori') }}</strong>.
+                                @else
+                                    Saat ini belum ada perlengkapan camping
+                                    yang tersedia di katalog.
+                                @endif
+
                             </p>
+
+
+                            @if (request('kategori'))
+                                <a href="{{ url('/katalog') }}" class="btn btn-filter mt-2">
+
+                                    <i class="fa-solid fa-arrow-left me-2"></i>
+                                    Tampilkan Semua Barang
+
+                                </a>
+                            @endif
 
                         </div>
 
@@ -563,36 +621,46 @@
 
                 </div>
 
+
                 <div class="col-md-3">
 
                     <h5>Menu</h5>
 
                     <p class="mb-2">
+
                         <a href="{{ url('/') }}" class="text-white text-decoration-none">
                             Home
                         </a>
+
                     </p>
 
                     <p class="mb-2">
+
                         <a href="{{ url('/katalog') }}" class="text-white text-decoration-none">
                             Katalog
                         </a>
+
                     </p>
 
                 </div>
+
 
                 <div class="col-md-3">
 
                     <h5>Kontak</h5>
 
                     <p class="mb-2">
+
                         <i class="fa-solid fa-phone"></i>
                         08xxxxxxxxxx
+
                     </p>
 
                     <p class="mb-2">
+
                         <i class="fa-solid fa-envelope"></i>
                         gearcamp@gmail.com
+
                     </p>
 
                 </div>
