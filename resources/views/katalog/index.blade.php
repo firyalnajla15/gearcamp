@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,789 +11,385 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background: #f8faf9;
-            color: #1f2933;
+            background: #f7f9f7;
+            color: #26352b;
         }
 
-        /* NAVBAR */
+        /* Navbar */
         .navbar {
-            background: #ffffff;
-            padding: 17px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            background: #1f4d3a;
+            padding: 15px 0;
         }
 
         .navbar-brand {
-            font-size: 25px;
-            font-weight: 700;
-            color: #183b2b !important;
+            color: white !important;
+            font-weight: bold;
+            font-size: 24px;
         }
 
         .navbar-brand i {
             margin-right: 8px;
         }
 
-        .nav-link {
-            color: #374151 !important;
-            font-weight: 500;
-            margin-left: 20px;
+        .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            margin: 0 8px;
         }
 
-        .nav-link:hover {
-            color: #2f6b4f !important;
+        .navbar-nav .nav-link:hover {
+            color: white !important;
         }
 
-        /* CART */
-        .cart-btn {
-            margin-left: 20px;
-            border: 1px solid #2f6b4f;
-            color: #2f6b4f;
+        .btn-cart {
+            background: white;
+            color: #1f4d3a;
             border-radius: 8px;
-            padding: 8px 17px;
-            text-decoration: none;
+            padding: 8px 16px;
             font-weight: 600;
-            position: relative;
+            text-decoration: none;
         }
 
-        .cart-btn:hover {
-            background: #2f6b4f;
-            color: white;
+        .btn-cart:hover {
+            background: #e9f3ed;
+            color: #1f4d3a;
         }
 
-        .cart-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #d49a4a;
-            color: white;
-            font-size: 11px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* HEADER */
+        /* Header */
         .catalog-header {
-            background: #183b2b;
-            padding: 65px 20px;
-            color: white;
+            background: #eaf2ed;
+            padding: 70px 0;
             text-align: center;
         }
 
         .catalog-header h1 {
-            font-size: 42px;
             font-weight: 700;
-            margin-bottom: 12px;
+            color: #1f4d3a;
+            margin-bottom: 15px;
         }
 
         .catalog-header p {
-            color: #d1d5db;
-            margin: 0;
-            font-size: 17px;
+            color: #66736b;
+            margin-bottom: 0;
         }
 
-        /* FILTER */
-        .filter-section {
-            padding: 35px 0 10px;
-        }
-
-        .search-box {
+        /* Filter */
+        .filter-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-top: -30px;
             position: relative;
         }
 
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 14px;
-            color: #6b7280;
-        }
-
-        .search-box input {
-            padding-left: 42px;
-            height: 46px;
+        .form-control,
+        .form-select {
             border-radius: 8px;
-            border: 1px solid #d1d5db;
+            padding: 12px 15px;
+            border: 1px solid #dce4df;
         }
 
-        .category-select {
-            height: 46px;
-            border-radius: 8px;
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #1f4d3a;
+            box-shadow: 0 0 0 0.2rem rgba(31, 77, 58, 0.1);
         }
 
-        /* PRODUCT CARD */
+        /* Product Card */
         .product-card {
             background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
+            border: none;
+            border-radius: 15px;
             overflow: hidden;
             height: 100%;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
             transition: 0.3s;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.09);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .product-image {
             width: 100%;
-            height: 230px;
+            height: 240px;
             object-fit: cover;
         }
 
-        .product-content {
-            padding: 20px;
+        .no-image {
+            width: 100%;
+            height: 240px;
+            background: #edf2ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9aa9a0;
         }
 
-        .product-category {
-            font-size: 12px;
-            color: #2f6b4f;
-            background: #e8f1ec;
+        .product-body {
+            padding: 22px;
+        }
+
+        .category-badge {
             display: inline-block;
-            padding: 5px 10px;
+            background: #e6f1eb;
+            color: #1f4d3a;
+            padding: 5px 12px;
             border-radius: 20px;
-            margin-bottom: 10px;
+            font-size: 13px;
             font-weight: 600;
+            margin-bottom: 10px;
         }
 
-        .product-name {
+        .product-title {
             font-size: 20px;
             font-weight: 700;
-            color: #183b2b;
             margin-bottom: 8px;
+            color: #26352b;
         }
 
         .product-description {
-            color: #6b7280;
+            color: #727d76;
             font-size: 14px;
-            line-height: 1.6;
-            min-height: 45px;
+            min-height: 42px;
             margin-bottom: 15px;
         }
 
         .product-price {
-            color: #183b2b;
-            font-size: 19px;
+            color: #1f4d3a;
+            font-size: 20px;
             font-weight: 700;
         }
 
-        .product-price span {
+        .product-price small {
             font-size: 13px;
-            font-weight: 400;
-            color: #6b7280;
+            color: #7b857e;
+            font-weight: normal;
         }
 
         .stock {
-            font-size: 13px;
-            color: #6b7280;
-        }
-
-        .product-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 18px;
+            font-size: 14px;
+            color: #66736b;
+            margin-bottom: 18px;
         }
 
         .btn-detail {
-            flex: 1;
-            border: 1px solid #2f6b4f;
-            color: #2f6b4f;
-            padding: 9px;
-            border-radius: 7px;
+            border: 1px solid #1f4d3a;
+            color: #1f4d3a;
+            border-radius: 8px;
+            padding: 10px;
+            font-weight: 600;
             text-decoration: none;
             text-align: center;
-            font-weight: 600;
-            font-size: 14px;
         }
 
         .btn-detail:hover {
-            background: #e8f1ec;
-            color: #183b2b;
+            background: #1f4d3a;
+            color: white;
         }
 
-        .btn-cart {
-            flex: 1;
+        .btn-add-cart {
+            background: #1f4d3a;
+            color: white;
             border: none;
-            background: #2f6b4f;
-            color: white;
-            padding: 9px;
-            border-radius: 7px;
+            border-radius: 8px;
+            padding: 10px;
             font-weight: 600;
-            font-size: 14px;
         }
 
-        .btn-cart:hover {
-            background: #24543e;
-        }
-
-        /* FOOTER */
-        footer {
-            background: #10271c;
+        .btn-add-cart:hover {
+            background: #163b2c;
             color: white;
-            margin-top: 80px;
-            padding: 35px 0;
         }
 
-        .footer-brand {
-            font-size: 22px;
+        .btn-add-cart:disabled {
+            background: #adb8b1;
+            cursor: not-allowed;
+        }
+
+        /* Empty */
+        .empty-box {
+            background: white;
+            border-radius: 15px;
+            padding: 70px 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-box i {
+            color: #aab6ae;
+            margin-bottom: 20px;
+        }
+
+        .empty-box h4 {
+            color: #1f4d3a;
             font-weight: 700;
         }
 
-        .footer-text {
-            color: #9ca3af;
-            margin-top: 8px;
+        .empty-box p {
+            color: #7b857e;
         }
 
-        @media (max-width: 768px) {
+        /* Footer */
+        footer {
+            background: #1f4d3a;
+            color: white;
+            margin-top: 80px;
+            padding: 50px 0 25px;
+        }
 
-            .catalog-header h1 {
-                font-size: 34px;
-            }
+        footer h5 {
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
 
-            .cart-btn {
-                margin-left: 0;
-                margin-top: 10px;
-            }
+        footer p {
+            color: rgba(255, 255, 255, 0.75);
+        }
 
-            .nav-link {
-                margin-left: 0;
-            }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 14px;
         }
     </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg sticky-top">
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
 
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <i class="fa-solid fa-mountain-sun"></i>
+                GearCamp
+            </a>
+
+            <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav mx-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/') }}">
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url('/katalog') }}">
+                            Katalog
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/#tentang') }}">
+                            Tentang
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/#kontak') }}">
+                            Kontak
+                        </a>
+                    </li>
+
+                </ul>
+
+                <a href="#" class="btn-cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    Keranjang
+                    <span class="badge bg-success ms-1">0</span>
+                </a>
+
+            </div>
+
+        </div>
+    </nav>
+
+
+    <!-- ================= HEADER ================= -->
+    <section class="catalog-header">
+
+        <div class="container">
+
+            <h1>Katalog GearCamp</h1>
+
+            <p>
+                Temukan berbagai perlengkapan camping berkualitas
+                untuk menemani perjalanan outdoor kamu.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FILTER ================= -->
     <div class="container">
 
-        <a class="navbar-brand" href="/">
-            <i class="fa-solid fa-mountain-sun"></i>
-            GearCamp
-        </a>
+        <div class="filter-box">
 
-        <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
+            <div class="row g-3">
 
-            <span class="navbar-toggler-icon"></span>
+                <div class="col-md-8">
 
-        </button>
+                    <div class="input-group">
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-
-            <ul class="navbar-nav ms-auto align-items-lg-center">
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/">
-                        Home
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="/katalog">
-                        Katalog
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        Tentang
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        Kontak
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#" class="cart-btn">
-
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        Cart
-
-                        <span class="cart-badge">
-                            0
+                        <span class="input-group-text bg-white">
+                            <i class="fa-solid fa-magnifying-glass"></i>
                         </span>
 
-                    </a>
-                </li>
+                        <input type="text" class="form-control" placeholder="Cari perlengkapan camping...">
 
-            </ul>
-
-        </div>
-
-    </div>
-
-</nav>
-
-
-<!-- HEADER -->
-<section class="catalog-header">
-
-    <div class="container">
-
-        <h1>Katalog GearCamp</h1>
-
-        <p>
-            Temukan perlengkapan camping yang kamu butuhkan
-            untuk perjalananmu.
-        </p>
-
-    </div>
-
-</section>
-
-
-<!-- FILTER -->
-<section class="filter-section">
-
-    <div class="container">
-
-        <div class="row g-3">
-
-            <div class="col-md-8">
-
-                <div class="search-box">
-
-                    <i class="fa-solid fa-magnifying-glass"></i>
-
-                    <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Cari perlengkapan camping...">
+                    </div>
 
                 </div>
 
-            </div>
+                <div class="col-md-4">
 
-            <div class="col-md-4">
+                    <select class="form-select">
 
-                <select class="form-select category-select">
+                        <option selected>
+                            Semua Kategori
+                        </option>
 
-                    <option selected>Semua Kategori</option>
-                    <option>Tenda</option>
-                    <option>Tas & Carrier</option>
-                    <option>Sleeping Bag</option>
-                    <option>Peralatan Masak</option>
-                    <option>Peralatan Outdoor</option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- PRODUCTS -->
-<section class="py-4">
-
-    <div class="container">
-
-        <div class="row g-4">
-
-
-            <!-- PRODUCT 1 -->
-            <div class="col-lg-4 col-md-6">
-
-                <div class="product-card">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=900&q=80"
-                        class="product-image"
-                        alt="Tenda Dome 4 Orang">
-
-                    <div class="product-content">
-
-                        <div class="product-category">
+                        <option>
                             Tenda
-                        </div>
+                        </option>
 
-                        <div class="product-name">
-                            Tenda Dome 4 Orang
-                        </div>
-
-                        <div class="product-description">
-                            Tenda nyaman untuk camping bersama
-                            teman atau keluarga.
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <div class="product-price">
-                                Rp75.000
-                                <span>/ hari</span>
-                            </div>
-
-                            <div class="stock">
-                                Stok: 5
-                            </div>
-
-                        </div>
-
-                        <div class="product-actions">
-
-                            <a href="#" class="btn-detail">
-                                Detail
-                            </a>
-
-                            <button class="btn-cart">
-                                <i class="fa-solid fa-cart-plus"></i>
-                                Add to Cart
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRODUCT 2 -->
-            <div class="col-lg-4 col-md-6">
-
-                <div class="product-card">
-
-                    <img
-                        src="https://m.media-amazon.com/images/I/81ROCYp2DwL._AC_SL1050_.jpg"
-                        class="product-image"
-                        alt="Sleeping Bag">
-
-                    <div class="product-content">
-
-                        <div class="product-category">
-                            Sleeping Bag
-                        </div>
-
-                        <div class="product-name">
-                            Sleeping Bag Outdoor
-                        </div>
-
-                        <div class="product-description">
-                            Sleeping bag hangat dan nyaman
-                            untuk menemani malam di alam.
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <div class="product-price">
-                                Rp25.000
-                                <span>/ hari</span>
-                            </div>
-
-                            <div class="stock">
-                                Stok: 8
-                            </div>
-
-                        </div>
-
-                        <div class="product-actions">
-
-                            <a href="#" class="btn-detail">
-                                Detail
-                            </a>
-
-                            <button class="btn-cart">
-                                <i class="fa-solid fa-cart-plus"></i>
-                                Add to Cart
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRODUCT 3 -->
-            <div class="col-lg-4 col-md-6">
-
-                <div class="product-card">
-
-                    <img
-                        src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=900&q=80"
-                        class="product-image"
-                        alt="Carrier 60 Liter">
-
-                    <div class="product-content">
-
-                        <div class="product-category">
+                        <option>
                             Tas & Carrier
-                        </div>
+                        </option>
 
-                        <div class="product-name">
-                            Carrier 60L
-                        </div>
+                        <option>
+                            Sleeping Bag
+                        </option>
 
-                        <div class="product-description">
-                            Carrier dengan kapasitas besar
-                            untuk perjalanan hiking dan camping.
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <div class="product-price">
-                                Rp35.000
-                                <span>/ hari</span>
-                            </div>
-
-                            <div class="stock">
-                                Stok: 4
-                            </div>
-
-                        </div>
-
-                        <div class="product-actions">
-
-                            <a href="#" class="btn-detail">
-                                Detail
-                            </a>
-
-                            <button class="btn-cart">
-                                <i class="fa-solid fa-cart-plus"></i>
-                                Add to Cart
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRODUCT 4 -->
-            <div class="col-lg-4 col-md-6">
-
-                <div class="product-card">
-
-                    <img
-                        src="https://enviostore.com/media/product/452/product_image_6-1686985973.jpg"
-                        class="product-image"
-                        alt="Kompor Camping">
-
-                    <div class="product-content">
-
-                        <div class="product-category">
+                        <option>
                             Peralatan Masak
-                        </div>
+                        </option>
 
-                        <div class="product-name">
-                            Kompor Camping
-                        </div>
-
-                        <div class="product-description">
-                            Kompor portable yang praktis untuk
-                            memasak selama camping.
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <div class="product-price">
-                                Rp20.000
-                                <span>/ hari</span>
-                            </div>
-
-                            <div class="stock">
-                                Stok: 6
-                            </div>
-
-                        </div>
-
-                        <div class="product-actions">
-
-                            <a href="#" class="btn-detail">
-                                Detail
-                            </a>
-
-                            <button class="btn-cart">
-                                <i class="fa-solid fa-cart-plus"></i>
-                                Add to Cart
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRODUCT 5 -->
-            <div class="col-lg-4 col-md-6">
-
-                <div class="product-card">
-
-                    <img
-                        src="https://down-id.img.susercontent.com/file/id-11134207-7rasg-m5tvbzper1na94"
-                        class="product-image"
-                        alt="Matras Camping">
-
-                    <div class="product-content">
-
-                        <div class="product-category">
+                        <option>
                             Peralatan Outdoor
-                        </div>
+                        </option>
 
-                        <div class="product-name">
-                            Matras Camping
-                        </div>
+                    </select>
 
-                        <div class="product-description">
-                            Matras ringan untuk memberikan
-                            kenyamanan saat beristirahat.
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <div class="product-price">
-                                Rp15.000
-                                <span>/ hari</span>
-                            </div>
-
-                            <div class="stock">
-                                Stok: 10
-                            </div>
-
-                        </div>
-
-                        <div class="product-actions">
-
-                            <a href="#" class="btn-detail">
-                                Detail
-                            </a>
-
-                            <button class="btn-cart">
-                                <i class="fa-solid fa-cart-plus"></i>
-                                Add to Cart
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- PRODUCT 6 -->
-            <div class="col-lg-4 col-md-6">
-
-                <div class="product-card">
-
-                    <img
-                        src="https://www.bhphotovideo.com/images/images2000x2000/nitecore_nu43_rechargeable_led_headlamp_1740777.jpg"
-                        class="product-image"
-                        alt="Headlamp">
-
-                    <div class="product-content">
-
-                        <div class="product-category">
-                            Peralatan Outdoor
-                        </div>
-
-                        <div class="product-name">
-                            Headlamp Outdoor
-                        </div>
-
-                        <div class="product-description">
-                            Lampu kepala praktis untuk aktivitas
-                            outdoor pada malam hari.
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <div class="product-price">
-                                Rp10.000
-                                <span>/ hari</span>
-                            </div>
-
-                            <div class="stock">
-                                Stok: 12
-                            </div>
-
-                        </div>
-
-                        <div class="product-actions">
-
-                            <a href="#" class="btn-detail">
-                                Detail
-                            </a>
-
-                            <button class="btn-cart">
-                                <i class="fa-solid fa-cart-plus"></i>
-                                Add to Cart
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- FOOTER -->
-<footer>
-
-    <div class="container">
-
-        <div class="row align-items-center">
-
-            <div class="col-md-6">
-
-                <div class="footer-brand">
-                    <i class="fa-solid fa-mountain-sun"></i>
-                    GearCamp
-                </div>
-
-                <div class="footer-text">
-                    Rental perlengkapan camping untuk petualanganmu.
-                </div>
-
-            </div>
-
-            <div class="col-md-6 text-md-end mt-3 mt-md-0">
-
-                <div class="footer-text">
-                    © {{ date('Y') }} GearCamp. All Rights Reserved.
                 </div>
 
             </div>
@@ -801,10 +398,223 @@
 
     </div>
 
-</footer>
+
+    <!-- ================= CATALOG ================= -->
+    <section class="py-5">
+
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                <div>
+
+                    <h3 class="fw-bold mb-1">
+                        Perlengkapan Camping
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Pilih perlengkapan yang kamu butuhkan.
+                    </p>
+
+                </div>
+
+                <span class="text-muted">
+                    {{ $barang->count() }} barang
+                </span>
+
+            </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            <div class="row g-4">
+
+                @forelse($barang as $item)
+                    <div class="col-lg-4 col-md-6">
+
+                        <div class="product-card">
+
+                            <!-- FOTO BARANG -->
+                            @if ($item->foto)
+                                <img src="{{ asset('storage/' . $item->foto) }}" class="product-image"
+                                    alt="{{ $item->nama_barang }}">
+                            @else
+                                <div class="no-image">
+
+                                    <i class="fa-solid fa-campground fa-4x"></i>
+
+                                </div>
+                            @endif
+
+
+                            <!-- DETAIL BARANG -->
+                            <div class="product-body">
+
+                                <span class="category-badge">
+                                    {{ $item->kategori }}
+                                </span>
+
+                                <h5 class="product-title">
+                                    {{ $item->nama_barang }}
+                                </h5>
+
+                                <p class="product-description">
+                                    {{ $item->deskripsi ?? 'Perlengkapan camping berkualitas dari GearCamp.' }}
+                                </p>
+
+                                <div class="product-price">
+
+                                    Rp{{ number_format($item->harga_per_hari, 0, ',', '.') }}
+
+                                    <small>
+                                        / hari
+                                    </small>
+
+                                </div>
+
+                                <div class="stock">
+
+                                    @if ($item->stok > 0)
+                                        <i class="fa-solid fa-box"></i>
+                                        Stok tersedia:
+                                        <strong>{{ $item->stok }}</strong>
+                                    @else
+                                        <span class="text-danger">
+
+                                            <i class="fa-solid fa-circle-xmark"></i>
+                                            Stok habis
+
+                                        </span>
+                                    @endif
+
+                                </div>
+
+
+                                <!-- BUTTON -->
+                                <div class="d-flex gap-2">
+
+                                    <a href="{{ route('katalog.show', $item->id) }}" class="btn btn-outline-dark">
+                                        <i class="fa-solid fa-eye me-1"></i>
+                                        Lihat Detail
+                                    </a>
+
+                                    <button type="button" class="btn-add-cart flex-fill"
+                                        {{ $item->stok <= 0 ? 'disabled' : '' }}>
+
+                                        <i class="fa-solid fa-cart-plus"></i>
+                                        Add to Cart
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                @empty
+
+                    <!-- JIKA DATABASE MASIH KOSONG -->
+                    <div class="col-12">
+
+                        <div class="empty-box">
+
+                            <i class="fa-solid fa-box-open fa-4x"></i>
+
+                            <h4>
+                                Belum Ada Barang
+                            </h4>
+
+                            <p>
+                                Saat ini belum ada perlengkapan camping
+                                yang tersedia di katalog.
+                            </p>
+
+                        </div>
+
+                    </div>
+                @endforelse
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <h5>
+                        <i class="fa-solid fa-mountain-sun"></i>
+                        GearCamp
+                    </h5>
+
+                    <p>
+                        Solusi mudah untuk menyewa perlengkapan
+                        camping berkualitas dengan harga terjangkau.
+                    </p>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <h5>Menu</h5>
+
+                    <p class="mb-2">
+                        <a href="{{ url('/') }}" class="text-white text-decoration-none">
+                            Home
+                        </a>
+                    </p>
+
+                    <p class="mb-2">
+                        <a href="{{ url('/katalog') }}" class="text-white text-decoration-none">
+                            Katalog
+                        </a>
+                    </p>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <h5>Kontak</h5>
+
+                    <p class="mb-2">
+                        <i class="fa-solid fa-phone"></i>
+                        08xxxxxxxxxx
+                    </p>
+
+                    <p class="mb-2">
+                        <i class="fa-solid fa-envelope"></i>
+                        gearcamp@gmail.com
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                © {{ date('Y') }} GearCamp.
+                All Rights Reserved.
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

@@ -8,10 +8,14 @@
     <title>GearCamp - Rental Perlengkapan Camping</title>
 
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
         * {
@@ -26,7 +30,8 @@
             color: #1f2933;
         }
 
-        /* NAVBAR */
+        /* ================= NAVBAR ================= */
+
         .navbar {
             background: #ffffff;
             padding: 18px 0;
@@ -60,6 +65,7 @@
             padding: 9px 20px;
             margin-left: 20px;
             font-weight: 600;
+            text-decoration: none;
         }
 
         .btn-login:hover {
@@ -67,16 +73,25 @@
             color: white;
         }
 
-        /* HERO */
+        /* ================= HERO ================= */
+
         .hero {
             min-height: 600px;
+
             display: flex;
             align-items: center;
-            background:
-                linear-gradient(rgba(12, 35, 24, 0.68), rgba(12, 35, 24, 0.68)),
-                url('https://images.unsplash.com/photo-1475483768296-6163e08872c1?auto=format&fit=crop&w=1800&q=80');
+
+            background-image:
+                linear-gradient(
+                    rgba(12, 35, 24, 0.68),
+                    rgba(12, 35, 24, 0.68)
+                ),
+                url("https://www.beyondthetent.com/wp-content/uploads/2023/09/outdoor-photos-2-1024x683.jpeg");
+
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
+
             color: white;
         }
 
@@ -132,7 +147,8 @@
             color: #183b2b;
         }
 
-        /* SECTION */
+        /* ================= SECTION ================= */
+
         .section {
             padding: 80px 0;
         }
@@ -153,7 +169,8 @@
             margin-top: 10px;
         }
 
-        /* FEATURES */
+        /* ================= FEATURES ================= */
+
         .feature-card {
             background: white;
             padding: 35px 25px;
@@ -192,7 +209,8 @@
             line-height: 1.6;
         }
 
-        /* ABOUT */
+        /* ================= ABOUT ================= */
+
         .about {
             background: white;
         }
@@ -221,7 +239,8 @@
             margin-bottom: 20px;
         }
 
-        /* CTA */
+        /* ================= CTA ================= */
+
         .cta {
             background: #183b2b;
             color: white;
@@ -240,7 +259,8 @@
             margin-bottom: 30px;
         }
 
-        /* FOOTER */
+        /* ================= FOOTER ================= */
+
         footer {
             background: #10271c;
             color: white;
@@ -261,7 +281,14 @@
             color: white;
             margin-left: 15px;
             font-size: 18px;
+            text-decoration: none;
         }
+
+        .social a:hover {
+            color: #d49a4a;
+        }
+
+        /* ================= RESPONSIVE ================= */
 
         @media (max-width: 768px) {
 
@@ -292,17 +319,25 @@
 
 <body>
 
-    <!-- NAVBAR -->
+    <!-- ================= NAVBAR ================= -->
+
     <nav class="navbar navbar-expand-lg sticky-top">
+
         <div class="container">
 
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="{{ url('/') }}">
                 <i class="fa-solid fa-mountain-sun"></i>
                 GearCamp
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+
                 <span class="navbar-toggler-icon"></span>
+
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -310,19 +345,27 @@
                 <ul class="navbar-nav ms-auto align-items-lg-center">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link" href="{{ url('/') }}">
+                            Home
+                        </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#tentang">Tentang</a>
+                        <a class="nav-link" href="#tentang">
+                            Tentang
+                        </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#keunggulan">Keunggulan</a>
+                        <a class="nav-link" href="#keunggulan">
+                            Keunggulan
+                        </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#kontak">Kontak</a>
+                        <a class="nav-link" href="#kontak">
+                            Kontak
+                        </a>
                     </li>
 
                     <li class="nav-item">
@@ -334,11 +377,14 @@
                 </ul>
 
             </div>
+
         </div>
+
     </nav>
 
 
-    <!-- HERO -->
+    <!-- ================= HERO ================= -->
+
     <section class="hero">
 
         <div class="container">
@@ -356,13 +402,21 @@
                     butuhkan dan mulai petualanganmu bersama GearCamp.
                 </p>
 
-                <a href="{{ url('/katalog') }}" class="btn-primary-custom">
+                <a
+                    href="{{ url('/katalog') }}"
+                    class="btn-primary-custom">
+
                     <i class="fa-solid fa-campground"></i>
                     Lihat Katalog
+
                 </a>
 
-                <a href="#tentang" class="btn-outline-custom">
+                <a
+                    href="#tentang"
+                    class="btn-outline-custom">
+
                     Tentang GearCamp
+
                 </a>
 
             </div>
@@ -372,17 +426,21 @@
     </section>
 
 
-    <!-- KEUNGGULAN -->
+    <!-- ================= KEUNGGULAN ================= -->
+
     <section class="section" id="keunggulan">
 
         <div class="container">
 
             <div class="section-title">
 
-                <h2>Kenapa GearCamp?</h2>
+                <h2>
+                    Kenapa GearCamp?
+                </h2>
 
                 <p>
-                    Semua yang kamu butuhkan untuk perjalanan camping yang lebih nyaman.
+                    Semua yang kamu butuhkan untuk perjalanan camping
+                    yang lebih nyaman.
                 </p>
 
             </div>
@@ -394,10 +452,14 @@
                     <div class="feature-card">
 
                         <div class="feature-icon">
+
                             <i class="fa-solid fa-campground"></i>
+
                         </div>
 
-                        <h5>Perlengkapan Lengkap</h5>
+                        <h5>
+                            Perlengkapan Lengkap
+                        </h5>
 
                         <p>
                             Berbagai perlengkapan camping tersedia
@@ -414,10 +476,14 @@
                     <div class="feature-card">
 
                         <div class="feature-icon">
+
                             <i class="fa-solid fa-tags"></i>
+
                         </div>
 
-                        <h5>Harga Terjangkau</h5>
+                        <h5>
+                            Harga Terjangkau
+                        </h5>
 
                         <p>
                             Nikmati pengalaman camping tanpa harus
@@ -434,10 +500,14 @@
                     <div class="feature-card">
 
                         <div class="feature-icon">
+
                             <i class="fa-solid fa-shield-heart"></i>
+
                         </div>
 
-                        <h5>Peralatan Berkualitas</h5>
+                        <h5>
+                            Peralatan Berkualitas
+                        </h5>
 
                         <p>
                             Setiap perlengkapan diperiksa agar tetap
@@ -455,7 +525,8 @@
     </section>
 
 
-    <!-- ABOUT -->
+    <!-- ================= ABOUT ================= -->
+
     <section class="section about" id="tentang">
 
         <div class="container">
@@ -464,8 +535,10 @@
 
                 <div class="col-md-6">
 
-                    <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1000&q=80"
-                        class="about-img" alt="Camping GearCamp">
+                    <img
+                        src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1000&q=80"
+                        class="about-img"
+                        alt="Camping GearCamp">
 
                 </div>
 
@@ -488,8 +561,12 @@
                             lakukan pemesanan, dan nikmati perjalananmu.
                         </p>
 
-                        <a href="#" class="btn-primary-custom">
+                        <a
+                            href="{{ url('/katalog') }}"
+                            class="btn-primary-custom">
+
                             Jelajahi Katalog
+
                         </a>
 
                     </div>
@@ -503,7 +580,8 @@
     </section>
 
 
-    <!-- CTA -->
+    <!-- ================= CTA ================= -->
+
     <section class="cta" id="kontak">
 
         <div class="container">
@@ -513,11 +591,16 @@
             </h2>
 
             <p>
-                Temukan perlengkapan camping yang sesuai dengan kebutuhanmu.
+                Temukan perlengkapan camping yang sesuai
+                dengan kebutuhanmu.
             </p>
 
-            <a href="#" class="btn-primary-custom">
+            <a
+                href="{{ url('/katalog') }}"
+                class="btn-primary-custom">
+
                 Lihat Katalog
+
             </a>
 
         </div>
@@ -525,7 +608,8 @@
     </section>
 
 
-    <!-- FOOTER -->
+    <!-- ================= FOOTER ================= -->
+
     <footer>
 
         <div class="container">
@@ -535,15 +619,21 @@
                 <div class="col-md-6">
 
                     <div class="footer-brand">
+
                         <i class="fa-solid fa-mountain-sun"></i>
                         GearCamp
+
                     </div>
 
                     <div class="footer-text">
-                        Rental perlengkapan camping untuk petualanganmu.
+
+                        Rental perlengkapan camping
+                        untuk petualanganmu.
+
                     </div>
 
                 </div>
+
 
                 <div class="col-md-6 text-md-end mt-3 mt-md-0">
 
@@ -570,7 +660,10 @@
             <hr style="border-color: #294334;">
 
             <div class="text-center footer-text">
-                © {{ date('Y') }} GearCamp. All Rights Reserved.
+
+                © {{ date('Y') }} GearCamp.
+                All Rights Reserved.
+
             </div>
 
         </div>
@@ -578,7 +671,11 @@
     </footer>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
 
 </body>
 
