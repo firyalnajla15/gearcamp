@@ -7,11 +7,9 @@
 
     <title>Keranjang - GearCamp</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
         body {
@@ -201,6 +199,7 @@
         }
 
         @media (max-width: 768px) {
+
             .cart-image,
             .no-image {
                 width: 80px;
@@ -277,28 +276,24 @@
         <div class="container">
 
             {{-- SUCCESS --}}
-            @if(session('success'))
-
+            @if (session('success'))
                 <div class="alert alert-success">
                     <i class="fa-solid fa-circle-check me-2"></i>
                     {{ session('success') }}
                 </div>
-
             @endif
 
 
             {{-- ERROR --}}
-            @if(session('error'))
-
+            @if (session('error'))
                 <div class="alert alert-danger">
                     <i class="fa-solid fa-circle-exclamation me-2"></i>
                     {{ session('error') }}
                 </div>
-
             @endif
 
 
-            @if(count($cart) > 0)
+            @if (count($cart) > 0)
 
                 <div class="row g-4">
 
@@ -311,8 +306,7 @@
                         @endphp
 
 
-                        @foreach($cart as $item)
-
+                        @foreach ($cart as $item)
                             @php
                                 $subtotal = $item['harga_per_hari'] * $item['jumlah'];
                                 $total += $subtotal;
@@ -327,22 +321,15 @@
                                     <!-- IMAGE -->
                                     <div class="col-3 col-md-2">
 
-                                        @if($item['foto'])
-
-                                            <img
-                                                src="{{ asset('storage/' . $item['foto']) }}"
-                                                class="cart-image"
-                                                alt="{{ $item['nama_barang'] }}"
-                                            >
-
+                                        @if ($item['foto'])
+                                            <img src="{{ asset('storage/' . $item['foto']) }}" class="cart-image"
+                                                alt="{{ $item['nama_barang'] }}">
                                         @else
-
                                             <div class="no-image">
 
                                                 <i class="fa-solid fa-campground fa-2x"></i>
 
                                             </div>
-
                                         @endif
 
                                     </div>
@@ -381,10 +368,7 @@
 
                                         <div class="quantity-box">
 
-                                            <form
-                                                action="{{ route('cart.decrease', $item['id']) }}"
-                                                method="POST"
-                                            >
+                                            <form action="{{ route('cart.decrease', $item['id']) }}" method="POST">
 
                                                 @csrf
 
@@ -400,10 +384,7 @@
                                             </span>
 
 
-                                            <form
-                                                action="{{ route('cart.increase', $item['id']) }}"
-                                                method="POST"
-                                            >
+                                            <form action="{{ route('cart.increase', $item['id']) }}" method="POST">
 
                                                 @csrf
 
@@ -437,19 +418,13 @@
                                     <!-- DELETE -->
                                     <div class="col-12 col-md-1 text-md-end">
 
-                                        <form
-                                            action="{{ route('cart.remove', $item['id']) }}"
-                                            method="POST"
-                                        >
+                                        <form action="{{ route('cart.remove', $item['id']) }}" method="POST">
 
                                             @csrf
                                             @method('DELETE')
 
-                                            <button
-                                                type="submit"
-                                                class="btn-delete"
-                                                onclick="return confirm('Hapus barang dari keranjang?')"
-                                            >
+                                            <button type="submit" class="btn-delete"
+                                                onclick="return confirm('Hapus barang dari keranjang?')">
 
                                                 <i class="fa-solid fa-trash"></i>
 
@@ -462,27 +437,19 @@
                                 </div>
 
                             </div>
-
                         @endforeach
 
 
                         <!-- CLEAR CART -->
                         <div class="text-end">
 
-                            <form
-                                action="{{ route('cart.clear') }}"
-                                method="POST"
-                                class="d-inline"
-                            >
+                            <form action="{{ route('cart.clear') }}" method="POST" class="d-inline">
 
                                 @csrf
                                 @method('DELETE')
 
-                                <button
-                                    type="submit"
-                                    class="btn btn-outline-danger btn-sm"
-                                    onclick="return confirm('Kosongkan semua keranjang?')"
-                                >
+                                <button type="submit" class="btn btn-outline-danger btn-sm"
+                                    onclick="return confirm('Kosongkan semua keranjang?')">
 
                                     <i class="fa-solid fa-trash-can me-1"></i>
                                     Kosongkan Keranjang
@@ -534,22 +501,16 @@
                             </div>
 
 
-                            <button
-                                type="button"
-                                class="btn-checkout"
-                                onclick="alert('Checkout akan kita buat setelah Cart selesai.')"
-                            >
 
+                            <a href="{{ route('checkout') }}"
+                                class="btn-checkout d-block text-center text-decoration-none">
                                 <i class="fa-solid fa-arrow-right me-2"></i>
                                 Lanjut ke Checkout
+                            </a>
 
-                            </button>
 
 
-                            <a
-                                href="{{ url('/katalog') }}"
-                                class="btn btn-outline-secondary w-100 mt-2"
-                            >
+                            <a href="{{ url('/katalog') }}" class="btn btn-outline-secondary w-100 mt-2">
 
                                 <i class="fa-solid fa-arrow-left me-2"></i>
                                 Kembali ke Katalog
@@ -561,9 +522,7 @@
                     </div>
 
                 </div>
-
             @else
-
                 <!-- EMPTY CART -->
                 <div class="empty-cart">
 
@@ -577,11 +536,7 @@
                         Yuk pilih perlengkapan camping yang ingin kamu rental.
                     </p>
 
-                    <a
-                        href="{{ url('/katalog') }}"
-                        class="btn btn-checkout mt-3"
-                        style="max-width: 220px;"
-                    >
+                    <a href="{{ url('/katalog') }}" class="btn btn-checkout mt-3" style="max-width: 220px;">
 
                         <i class="fa-solid fa-store me-2"></i>
                         Lihat Katalog

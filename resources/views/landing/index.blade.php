@@ -8,14 +8,10 @@
     <title>GearCamp - Rental Perlengkapan Camping</title>
 
     <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
         * {
@@ -82,10 +78,8 @@
             align-items: center;
 
             background-image:
-                linear-gradient(
-                    rgba(12, 35, 24, 0.68),
-                    rgba(12, 35, 24, 0.68)
-                ),
+                linear-gradient(rgba(12, 35, 24, 0.68),
+                    rgba(12, 35, 24, 0.68)),
                 url("https://www.beyondthetent.com/wp-content/uploads/2023/09/outdoor-photos-2-1024x683.jpeg");
 
             background-size: cover;
@@ -330,11 +324,7 @@
                 GearCamp
             </a>
 
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
 
                 <span class="navbar-toggler-icon"></span>
 
@@ -368,12 +358,34 @@
                         </a>
                     </li>
 
-                    <li class="nav-item">
-                        <a href="#" class="btn-login">
-                            Login
-                        </a>
-                    </li>
+                    <li class="nav-item dropdown" style="position: relative;">
+    <button
+        type="button"
+        class="inline-block px-5 py-1.5 text-sm leading-normal border-0 bg-transparent"
+        style="color: inherit;"
+        onclick="document.getElementById('login-menu').classList.toggle('d-none')"
+    >
+        Login <i class="fa-solid fa-chevron-down ms-1"></i>
+    </button>
 
+    <ul
+        id="login-menu"
+        class="dropdown-menu show d-none"
+        style="position: absolute; top: 100%; right: 0; z-index: 99999;"
+    >
+        <li>
+            <a class="dropdown-item" href="{{ url('/login/user') }}">
+                Login User
+            </a>
+        </li>
+
+        <li>
+            <a class="dropdown-item" href="{{ url('/login/admin') }}">
+                Login Admin
+            </a>
+        </li>
+    </ul>
+</li>
                 </ul>
 
             </div>
@@ -402,18 +414,14 @@
                     butuhkan dan mulai petualanganmu bersama GearCamp.
                 </p>
 
-                <a
-                    href="{{ url('/katalog') }}"
-                    class="btn-primary-custom">
+                <a href="{{ url('/katalog') }}" class="btn-primary-custom">
 
                     <i class="fa-solid fa-campground"></i>
                     Lihat Katalog
 
                 </a>
 
-                <a
-                    href="#tentang"
-                    class="btn-outline-custom">
+                <a href="#tentang" class="btn-outline-custom">
 
                     Tentang GearCamp
 
@@ -535,10 +543,8 @@
 
                 <div class="col-md-6">
 
-                    <img
-                        src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1000&q=80"
-                        class="about-img"
-                        alt="Camping GearCamp">
+                    <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1000&q=80"
+                        class="about-img" alt="Camping GearCamp">
 
                 </div>
 
@@ -561,9 +567,7 @@
                             lakukan pemesanan, dan nikmati perjalananmu.
                         </p>
 
-                        <a
-                            href="{{ url('/katalog') }}"
-                            class="btn-primary-custom">
+                        <a href="{{ url('/katalog') }}" class="btn-primary-custom">
 
                             Jelajahi Katalog
 
@@ -595,9 +599,7 @@
                 dengan kebutuhanmu.
             </p>
 
-            <a
-                href="{{ url('/katalog') }}"
-                class="btn-primary-custom">
+            <a href="{{ url('/katalog') }}" class="btn-primary-custom">
 
                 Lihat Katalog
 
@@ -673,9 +675,7 @@
 
     <!-- Bootstrap JS -->
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
