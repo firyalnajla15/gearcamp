@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,7 +25,7 @@
             background: white;
             padding: 35px;
             border-radius: 16px;
-            box-shadow: 0 8px 30px rgba(0,0,0,.08);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .08);
         }
 
         .brand {
@@ -69,67 +70,56 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="login-card">
-    <div class="text-center">
-        <div class="brand">GearCamp</div>
-        <p class="text-muted small">
-            Masuk untuk melanjutkan penyewaan perlengkapan camping.
-        </p>
-    </div>
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            {{ $errors->first() }}
-        </div>
-    @endif
-
-    <form method="POST" action="{{ route('login.user.process') }}">
-        @csrf
-
-        <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input
-                type="email"
-                name="email"
-                class="form-control"
-                placeholder="nama@email.com"
-                value="{{ old('email') }}"
-                required
-                autofocus
-            >
+    <div class="login-card">
+        <div class="text-center">
+            <div class="brand">GearCamp</div>
+            <p class="text-muted small">
+                Masuk untuk melanjutkan penyewaan perlengkapan camping.
+            </p>
         </div>
 
-        <div class="mb-4">
-            <label class="form-label">Password</label>
-            <input
-                type="password"
-                name="password"
-                class="form-control"
-                placeholder="Masukkan password"
-                required
-            >
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                {{ $errors->first() }}
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('login.user.process') }}">
+            @csrf
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" placeholder="nama@email.com"
+                    value="{{ old('email') }}" required autofocus>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
+            </div>
+
+            <button type="submit" class="btn btn-green w-100">
+                Login sebagai User
+            </button>
+        </form>
+
+        <div class="text-center mt-3 small">
+            Belum punya akun?
+            <a href="{{ route('register') }}" class="register-link text-decoration-none">
+                Daftar sekarang
+            </a>
         </div>
 
-        <button type="submit" class="btn btn-green w-100">
-            Login sebagai User
-        </button>
-    </form>
-
-    <div class="text-center mt-3 small">
-        Belum punya akun?
-        <a href="{{ route('register') }}" class="register-link text-decoration-none">
-            Daftar sekarang
-        </a>
+        <div class="text-center mt-3">
+            <a href="{{ route('home') }}" class="text-decoration-none text-muted small">
+                ← Kembali ke Beranda
+            </a>
+        </div>
     </div>
-
-    <div class="text-center mt-3">
-        <a href="{{ route('home') }}" class="text-decoration-none text-muted small">
-            ← Kembali ke Beranda
-        </a>
-    </div>
-</div>
 
 </body>
+
 </html>

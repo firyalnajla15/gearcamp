@@ -85,7 +85,7 @@
 
     <p class="text-center mt-4 mb-0">
         Sudah punya akun?
-        <a href="{{ route('login') }}" class="brand">Login</a>
+        <a href="{{ route('login.user') }}" class="brand">Login</a>
     </p>
 </div>
 </body>
