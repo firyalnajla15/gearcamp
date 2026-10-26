@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -89,6 +90,28 @@ Route::middleware(['auth', 'role:user'])
     ->prefix('user')
     ->name('user.')
     ->group(function () {
+
+        // Dashboard User
         Route::get('/dashboard', [UserDashboardController::class, 'index'])
             ->name('dashboard');
+
+        // Rental Saya
+        Route::get('/rentals', function () {
+            return view('user.rentals');
+        })->name('rentals');
+
+        // Riwayat Transaksi
+        Route::get('/transactions', function () {
+            return view('user.transactions');
+        })->name('transactions');
+
+        // Profil Saya
+        Route::get('/profile', function () {
+            return view('user.profile');
+        })->name('profile');
+
+        // Bantuan
+        Route::get('/help', function () {
+            return view('user.help');
+        })->name('help');
     });

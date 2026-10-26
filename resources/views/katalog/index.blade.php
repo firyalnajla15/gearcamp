@@ -1,688 +1,309 @@
-<!DOCTYPE html>
-<html lang="id">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@extends(
+    Auth::check() && Auth::user()->role === 'user'
+        ? 'user.layouts.app'
+        : 'layouts.katalog-public'
+)
 
-    <title>Katalog - GearCamp</title>
+@section('title', 'Katalog GearCamp')
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+@section('page-title', 'Katalog Barang')
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+@section('content')
+<style>
+    .catalog-header {
+        background: #eaf2ed;
+        padding: 35px 25px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+    }
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f7f9f7;
-            color: #26352b;
-        }
+    .catalog-header h2 {
+        font-weight: 700;
+        color: #1f4d3a;
+    }
 
-        /* Navbar */
-        .navbar {
-            background: #1f4d3a;
-            padding: 15px 0;
-        }
+    .filter-box, .product-card, .empty-box {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,.05);
+    }
 
-        .navbar-brand {
-            color: white !important;
-            font-weight: bold;
-            font-size: 24px;
-        }
+    .filter-box {
+        padding: 22px;
+        margin-bottom: 30px;
+    }
 
-        .navbar-brand i {
-            margin-right: 8px;
-        }
+    .form-control, .form-select {
+        border-radius: 8px;
+        padding: 12px 15px;
+        border: 1px solid #dce4df;
+    }
 
-        .navbar-nav .nav-link {
-            color: rgba(255, 255, 255, 0.9) !important;
-            margin: 0 8px;
-        }
+    .product-card {
+        border: none;
+        overflow: hidden;
+        height: 100%;
+        transition: .3s;
+    }
 
-        .navbar-nav .nav-link:hover {
-            color: white !important;
-        }
+    .product-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 25px rgba(0,0,0,.09);
+    }
 
-        .btn-cart {
-            background: white;
-            color: #1f4d3a;
-            border-radius: 8px;
-            padding: 8px 16px;
-            font-weight: 600;
-            text-decoration: none;
-        }
+    .product-image, .no-image {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+    }
 
-        .btn-cart:hover {
-            background: #e9f3ed;
-            color: #1f4d3a;
-        }
+    .no-image {
+        background: #edf2ef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9aa9a0;
+    }
 
-        /* Header */
-        .catalog-header {
-            background: #eaf2ed;
-            padding: 70px 0;
-            text-align: center;
-        }
+    .product-body {
+        padding: 20px;
+    }
 
-        .catalog-header h1 {
-            font-weight: 700;
-            color: #1f4d3a;
-            margin-bottom: 15px;
-        }
+    .category-badge {
+        display: inline-block;
+        background: #e6f1eb;
+        color: #1f4d3a;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
 
-        .catalog-header p {
-            color: #66736b;
-            margin-bottom: 0;
-        }
+    .product-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #26352b;
+    }
 
-        /* Filter */
-        .filter-box {
-            background: white;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            margin-top: -30px;
-            position: relative;
-        }
+    .product-description {
+        color: #727d76;
+        font-size: 14px;
+        min-height: 42px;
+    }
 
-        .form-control,
-        .form-select {
-            border-radius: 8px;
-            padding: 12px 15px;
-            border: 1px solid #dce4df;
-        }
+    .product-price {
+        color: #1f4d3a;
+        font-size: 19px;
+        font-weight: 700;
+    }
 
-        .form-control:focus,
-        .form-select:focus {
-            border-color: #1f4d3a;
-            box-shadow: 0 0 0 0.2rem rgba(31, 77, 58, 0.1);
-        }
+    .product-price small {
+        color: #7b857e;
+        font-size: 12px;
+        font-weight: normal;
+    }
 
-        /* Product Card */
-        .product-card {
-            background: white;
-            border: none;
-            border-radius: 15px;
-            overflow: hidden;
-            height: 100%;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
-            transition: 0.3s;
-        }
+    .stock {
+        font-size: 13px;
+        color: #66736b;
+        margin: 12px 0;
+    }
 
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
+    .btn-detail, .btn-add-cart, .btn-filter {
+        border-radius: 8px;
+        padding: 10px;
+        font-weight: 600;
+        text-align: center;
+        text-decoration: none;
+    }
 
-        .product-image {
-            width: 100%;
-            height: 240px;
-            object-fit: cover;
-        }
+    .btn-detail {
+        border: 1px solid #1f4d3a;
+        color: #1f4d3a;
+    }
 
-        .no-image {
-            width: 100%;
-            height: 240px;
-            background: #edf2ef;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #9aa9a0;
-        }
+    .btn-detail:hover {
+        background: #1f4d3a;
+        color: white;
+    }
 
-        .product-body {
-            padding: 22px;
-        }
+    .btn-add-cart, .btn-filter {
+        background: #1f4d3a;
+        color: white;
+        border: none;
+    }
 
-        .category-badge {
-            display: inline-block;
-            background: #e6f1eb;
-            color: #1f4d3a;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
+    .btn-add-cart:hover, .btn-filter:hover {
+        background: #163b2c;
+        color: white;
+    }
 
-        .product-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #26352b;
-        }
+    .btn-add-cart:disabled {
+        background: #adb8b1;
+    }
 
-        .product-description {
-            color: #727d76;
-            font-size: 14px;
-            min-height: 42px;
-            margin-bottom: 15px;
-        }
+    .empty-box {
+        padding: 60px 20px;
+        text-align: center;
+    }
 
-        .product-price {
-            color: #1f4d3a;
-            font-size: 20px;
-            font-weight: 700;
-        }
+    .empty-box i {
+        color: #aab6ae;
+        margin-bottom: 20px;
+    }
 
-        .product-price small {
-            font-size: 13px;
-            color: #7b857e;
-            font-weight: normal;
-        }
+    .empty-box h4 {
+        color: #1f4d3a;
+        font-weight: 700;
+    }
+</style>
 
-        .stock {
-            font-size: 14px;
-            color: #66736b;
-            margin-bottom: 18px;
-        }
+<div class="catalog-header">
+    <h2>Temukan Perlengkapan Camping</h2>
+    <p class="text-secondary mb-0">
+        Pilih perlengkapan yang kamu butuhkan untuk petualangan berikutnya.
+    </p>
+</div>
 
-        .btn-detail {
-            border: 1px solid #1f4d3a;
-            color: #1f4d3a;
-            border-radius: 8px;
-            padding: 10px;
-            font-weight: 600;
-            text-decoration: none;
-            text-align: center;
-        }
+@if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
 
-        .btn-detail:hover {
-            background: #1f4d3a;
-            color: white;
-        }
+@if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
 
-        .btn-add-cart {
-            background: #1f4d3a;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 10px;
-            font-weight: 600;
-        }
-
-        .btn-add-cart:hover {
-            background: #163b2c;
-            color: white;
-        }
-
-        .btn-add-cart:disabled {
-            background: #adb8b1;
-            cursor: not-allowed;
-        }
-
-        /* Empty */
-        .empty-box {
-            background: white;
-            border-radius: 15px;
-            padding: 70px 20px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .empty-box i {
-            color: #aab6ae;
-            margin-bottom: 20px;
-        }
-
-        .empty-box h4 {
-            color: #1f4d3a;
-            font-weight: 700;
-        }
-
-        .empty-box p {
-            color: #7b857e;
-        }
-
-        /* Footer */
-        footer {
-            background: #1f4d3a;
-            color: white;
-            margin-top: 80px;
-            padding: 50px 0 25px;
-        }
-
-        footer h5 {
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        footer p {
-            color: rgba(255, 255, 255, 0.75);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
-            margin-top: 30px;
-            padding-top: 20px;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.65);
-            font-size: 14px;
-        }
-
-        /* Filter Button */
-        .btn-filter {
-            background: #1f4d3a;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 20px;
-            font-weight: 600;
-        }
-
-        .btn-filter:hover {
-            background: #163b2c;
-            color: white;
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- ================= NAVBAR ================= -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="container">
-
-            <a class="navbar-brand" href="{{ url('/') }}">
-                <i class="fa-solid fa-mountain-sun"></i>
-                GearCamp
-            </a>
-
-            <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
-
-                <span class="navbar-toggler-icon"></span>
-
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-
-                <ul class="navbar-nav mx-auto">
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/') }}">
-                            Home
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ url('/katalog') }}">
-                            Katalog
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/#tentang') }}">
-                            Tentang
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/#kontak') }}">
-                            Kontak
-                        </a>
-                    </li>
-
-                </ul>
-
-                <a href="{{ route('cart.index') }}" class="btn-cart">
-
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    Keranjang
-
-                    <span class="badge bg-success ms-1">
-                        {{ count(session('cart', [])) }}
-                    </span>
-
-                </a>
-
+<div class="filter-box">
+    <form action="{{ url('/katalog') }}" method="GET">
+        <div class="row g-3">
+            <div class="col-md-8">
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ request('search') }}"
+                    class="form-control"
+                    placeholder="Cari perlengkapan camping..."
+                >
             </div>
 
+            <div class="col-md-4">
+                <select name="kategori" class="form-select"
+                    onchange="this.form.submit()">
+                    <option value="">Semua Kategori</option>
+
+                    @foreach ($kategori as $itemKategori)
+                        <option value="{{ $itemKategori }}"
+                            {{ request('kategori') == $itemKategori ? 'selected' : '' }}>
+                            {{ $itemKategori }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-filter">
+                    <i class="fa-solid fa-magnifying-glass me-1"></i>
+                    Cari Barang
+                </button>
+            </div>
         </div>
-    </nav>
+    </form>
+</div>
 
-
-    <!-- ================= HEADER ================= -->
-    <section class="catalog-header">
-
-        <div class="container">
-
-            <h1>Katalog GearCamp</h1>
-
-            <p>
-                Temukan berbagai perlengkapan camping berkualitas
-                untuk menemani perjalanan outdoor kamu.
-            </p>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= FILTER ================= -->
-    <div class="container">
-
-        <div class="filter-box">
-
-            <form action="{{ url('/katalog') }}" method="GET">
-
-                <div class="row g-3">
-
-                    <!-- SEARCH -->
-                    <div class="col-md-8">
-
-                        <div class="input-group">
-
-                            <span class="input-group-text bg-white">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </span>
-
-                            <input type="text" name="search" value="{{ request('search') }}" class="form-control"
-                                placeholder="Cari perlengkapan camping...">
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- CATEGORY -->
-                    <div class="col-md-4">
-
-                        <select name="kategori" class="form-select" onchange="this.form.submit()">
-
-                            <option value="">
-                                Semua Kategori
-                            </option>
-
-                            @foreach ($kategori as $itemKategori)
-                                <option value="{{ $itemKategori }}"
-                                    {{ request('kategori') == $itemKategori ? 'selected' : '' }}>
-                                    {{ $itemKategori }}
-                                </option>
-                            @endforeach
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-            </form>
-
-        </div>
-
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+        <h4 class="fw-bold mb-1">
+            {{ request('kategori') ? 'Kategori: '.request('kategori') : 'Perlengkapan Camping' }}
+        </h4>
+        <p class="text-secondary mb-0">
+            Pilih perlengkapan yang sesuai dengan kebutuhanmu.
+        </p>
     </div>
 
+    <span class="text-secondary">{{ $barang->count() }} barang</span>
+</div>
 
-    <!-- ================= CATALOG ================= -->
-    <section class="py-5">
+<div class="row g-4">
+    @forelse ($barang as $item)
+        <div class="col-lg-4 col-md-6">
+            <div class="product-card h-100">
+                @if ($item->foto)
+                    <img
+                        src="{{ asset('storage/'.$item->foto) }}"
+                        class="product-image"
+                        alt="{{ $item->nama_barang }}"
+                    >
+                @else
+                    <div class="no-image">
+                        <i class="fa-solid fa-campground fa-4x"></i>
+                    </div>
+                @endif
 
-        <div class="container">
+                <div class="product-body">
+                    <span class="category-badge">{{ $item->kategori }}</span>
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="product-title">{{ $item->nama_barang }}</h5>
 
-                <div>
-
-                    <h3 class="fw-bold mb-1">
-                        @if (request('kategori'))
-                            Kategori: {{ request('kategori') }}
-                        @else
-                            Perlengkapan Camping
-                        @endif
-                    </h3>
-
-                    <p class="text-muted mb-0">
-
-                        @if (request('kategori'))
-                            Menampilkan perlengkapan kategori
-                            <strong>{{ request('kategori') }}</strong>.
-                        @else
-                            Pilih perlengkapan yang kamu butuhkan.
-                        @endif
-
+                    <p class="product-description">
+                        {{ $item->deskripsi ?? 'Perlengkapan camping berkualitas dari GearCamp.' }}
                     </p>
 
-                </div>
-
-                <span class="text-muted">
-                    {{ $barang->count() }} barang
-                </span>
-
-            </div>
-
-
-            <div class="row g-4">
-
-                @forelse($barang as $item)
-                    <div class="col-lg-4 col-md-6">
-
-                        <div class="product-card">
-
-                            <!-- FOTO BARANG -->
-                            @if ($item->foto)
-                                <img src="{{ asset('storage/' . $item->foto) }}" class="product-image"
-                                    alt="{{ $item->nama_barang }}">
-                            @else
-                                <div class="no-image">
-
-                                    <i class="fa-solid fa-campground fa-4x"></i>
-
-                                </div>
-                            @endif
-
-
-                            <!-- DETAIL BARANG -->
-                            <div class="product-body">
-
-                                <span class="category-badge">
-                                    {{ $item->kategori }}
-                                </span>
-
-                                <h5 class="product-title">
-                                    {{ $item->nama_barang }}
-                                </h5>
-
-                                <p class="product-description">
-                                    {{ $item->deskripsi ?? 'Perlengkapan camping berkualitas dari GearCamp.' }}
-                                </p>
-
-                                <div class="product-price">
-
-                                    Rp{{ number_format($item->harga_per_hari, 0, ',', '.') }}
-
-                                    <small>
-                                        / hari
-                                    </small>
-
-                                </div>
-
-                                <div class="stock">
-
-                                    @if ($item->stok > 0)
-                                        <i class="fa-solid fa-box"></i>
-
-                                        Stok tersedia:
-                                        <strong>{{ $item->stok }}</strong>
-                                    @else
-                                        <span class="text-danger">
-
-                                            <i class="fa-solid fa-circle-xmark"></i>
-                                            Stok habis
-
-                                        </span>
-                                    @endif
-
-                                </div>
-
-
-                                <!-- BUTTON -->
-                                <div class="d-flex gap-2">
-
-                                    <a href="{{ route('katalog.show', $item->id) }}" class="btn-detail flex-fill">
-
-                                        <i class="fa-solid fa-eye me-1"></i>
-                                        Lihat Detail
-
-                                    </a>
-
-
-                                    <form action="{{ route('cart.add', $item->id) }}" method="POST" class="flex-fill">
-                                        @csrf
-
-                                        <button type="submit" class="btn-add-cart w-100"
-                                            {{ $item->stok <= 0 ? 'disabled' : '' }}>
-
-                                            <i class="fa-solid fa-cart-plus"></i>
-                                            Add to Cart
-
-                                        </button>
-
-                                    </form>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
+                    <div class="product-price">
+                        Rp{{ number_format($item->harga_per_hari, 0, ',', '.') }}
+                        <small>/ hari</small>
                     </div>
 
-                @empty
-
-                    <!-- JIKA TIDAK ADA BARANG -->
-                    <div class="col-12">
-
-                        <div class="empty-box">
-
-                            <i class="fa-solid fa-box-open fa-4x"></i>
-
-                            <h4>
-                                @if (request('kategori'))
-                                    Barang Tidak Ditemukan
-                                @else
-                                    Belum Ada Barang
-                                @endif
-                            </h4>
-
-                            <p>
-
-                                @if (request('kategori'))
-                                    Belum ada barang untuk kategori
-                                    <strong>{{ request('kategori') }}</strong>.
-                                @else
-                                    Saat ini belum ada perlengkapan camping
-                                    yang tersedia di katalog.
-                                @endif
-
-                            </p>
-
-
-                            @if (request('kategori'))
-                                <a href="{{ url('/katalog') }}" class="btn btn-filter mt-2">
-
-                                    <i class="fa-solid fa-arrow-left me-2"></i>
-                                    Tampilkan Semua Barang
-
-                                </a>
-                            @endif
-
-                        </div>
-
+                    <div class="stock">
+                        @if ($item->stok > 0)
+                            <i class="fa-solid fa-box"></i>
+                            Stok tersedia: <strong>{{ $item->stok }}</strong>
+                        @else
+                            <span class="text-danger">
+                                <i class="fa-solid fa-circle-xmark"></i> Stok habis
+                            </span>
+                        @endif
                     </div>
-                @endforelse
 
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ================= FOOTER ================= -->
-    <footer>
-
-        <div class="container">
-
-            <div class="row">
-
-                <div class="col-md-6">
-
-                    <h5>
-                        <i class="fa-solid fa-mountain-sun"></i>
-                        GearCamp
-                    </h5>
-
-                    <p>
-                        Solusi mudah untuk menyewa perlengkapan
-                        camping berkualitas dengan harga terjangkau.
-                    </p>
-
-                </div>
-
-
-                <div class="col-md-3">
-
-                    <h5>Menu</h5>
-
-                    <p class="mb-2">
-
-                        <a href="{{ url('/') }}" class="text-white text-decoration-none">
-                            Home
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('katalog.show', $item->id) }}"
+                            class="btn-detail flex-fill">
+                            <i class="fa-solid fa-eye me-1"></i> Detail
                         </a>
 
-                    </p>
-
-                    <p class="mb-2">
-
-                        <a href="{{ url('/katalog') }}" class="text-white text-decoration-none">
-                            Katalog
-                        </a>
-
-                    </p>
-
+                        <form action="{{ route('cart.add', $item->id) }}"
+                            method="POST" class="flex-fill">
+                            @csrf
+                            <button type="submit"
+                                class="btn-add-cart w-100"
+                                {{ $item->stok <= 0 ? 'disabled' : '' }}>
+                                <i class="fa-solid fa-cart-plus"></i> Tambah
+                            </button>
+                        </form>
+                    </div>
                 </div>
-
-
-                <div class="col-md-3">
-
-                    <h5>Kontak</h5>
-
-                    <p class="mb-2">
-
-                        <i class="fa-solid fa-phone"></i>
-                        08xxxxxxxxxx
-
-                    </p>
-
-                    <p class="mb-2">
-
-                        <i class="fa-solid fa-envelope"></i>
-                        gearcamp@gmail.com
-
-                    </p>
-
-                </div>
-
             </div>
-
-
-            <div class="footer-bottom">
-
-                © {{ date('Y') }} GearCamp.
-                All Rights Reserved.
-
-            </div>
-
         </div>
-
-    </footer>
-
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-
-</html>
+    @empty
+        <div class="col-12">
+            <div class="empty-box">
+                <i class="fa-solid fa-box-open fa-4x"></i>
+                <h4>Barang Tidak Ditemukan</h4>
+                <p class="text-secondary">
+                    Coba ubah kata pencarian atau pilih kategori lain.
+                </p>
+                <a href="{{ url('/katalog') }}" class="btn btn-filter">
+                    Tampilkan Semua Barang
+                </a>
+            </div>
+        </div>
+    @endforelse
+</div>
+@endsection

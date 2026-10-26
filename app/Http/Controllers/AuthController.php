@@ -77,6 +77,7 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
+   
     // PROSES REGISTER USER
     public function register(Request $request)
     {
@@ -86,18 +87,18 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $user = User::create([
+        User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => 'user',
         ]);
 
-        Auth::login($user);
-        $request->session()->regenerate();
-
-        return redirect()->route('user.dashboard');
+        return redirect()
+            ->route('login.user')
+            ->with('success', 'Pendaftaran berhasil! Silakan login menggunakan akun yang sudah kamu daftarkan.');
     }
+
 
     // LOGOUT
     public function logout(Request $request)
