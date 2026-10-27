@@ -1,4 +1,3 @@
-
 @extends(
     Auth::check() && Auth::user()->role === 'user'
         ? 'user.layouts.app'
@@ -11,55 +10,126 @@
 
 @section('content')
 <style>
+    /* Import Font yang sama dengan halaman utama */
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap');
+
+    /* Variabel Warna (Senada dengan Home) */
+    :root {
+        --green-900: #10271c;
+        --green-800: #183b2b;
+        --green-700: #2f6b4f;
+        --green-100: #e8f1ec;
+        --gold-500: #d49a4a;
+        --gold-600: #b77e35;
+        --ink-900: #1f2933;
+        --ink-500: #6b7280;
+        --line: #e5e7eb;
+        --paper: #f8faf9;
+    }
+
+    /* Base Font */
+    body {
+        font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+        color: var(--ink-900);
+    }
+
+    /* Header Katalog */
     .catalog-header {
-        background: #eaf2ed;
-        padding: 35px 25px;
-        border-radius: 15px;
-        margin-bottom: 25px;
+        background: linear-gradient(135deg, var(--green-100) 0%, #f4f8f5 100%);
+        padding: 45px 35px;
+        border-radius: 20px;
+        margin-bottom: 35px;
+        border: 1px solid rgba(47, 107, 79, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .catalog-header::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image: radial-gradient(var(--green-700) 1px, transparent 1px);
+        background-size: 20px 20px;
+        opacity: 0.05;
+        pointer-events: none;
     }
 
     .catalog-header h2 {
+        font-family: 'Fraunces', serif;
         font-weight: 700;
-        color: #1f4d3a;
+        color: var(--green-800);
+        font-size: 32px;
+        margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
     }
 
+    .catalog-header p {
+        font-size: 16px;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Filter Box */
     .filter-box, .product-card, .empty-box {
         background: white;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0,0,0,.05);
+        border-radius: 16px;
+        box-shadow: 0 8px 30px -12px rgba(16, 39, 28, 0.08);
+        border: 1px solid var(--line);
     }
 
     .filter-box {
-        padding: 22px;
-        margin-bottom: 30px;
+        padding: 25px;
+        margin-bottom: 35px;
     }
 
+    /* Form Input */
     .form-control, .form-select {
-        border-radius: 8px;
-        padding: 12px 15px;
-        border: 1px solid #dce4df;
+        border-radius: 10px;
+        padding: 14px 18px;
+        border: 1px solid var(--line);
+        font-size: 15px;
+        color: var(--ink-900);
+        transition: all 0.3s ease;
+        background-color: var(--paper);
     }
 
+    .form-control:focus, .form-select:focus {
+        border-color: var(--green-700);
+        box-shadow: 0 0 0 4px rgba(47, 107, 79, 0.1);
+        background-color: white;
+    }
+
+    /* Product Card */
     .product-card {
-        border: none;
+        border: 1px solid var(--line);
         overflow: hidden;
         height: 100%;
-        transition: .3s;
+        transition: all 0.35s cubic-bezier(.22, .61, .36, 1);
+        position: relative;
+        display: flex;
+        flex-direction: column;
     }
 
     .product-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 10px 25px rgba(0,0,0,.09);
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px -20px rgba(16, 39, 28, 0.25);
+        border-color: transparent;
     }
 
     .product-image, .no-image {
         width: 100%;
-        height: 220px;
+        height: 230px;
         object-fit: cover;
+        transition: transform 0.6s cubic-bezier(.22, .61, .36, 1);
+    }
+
+    .product-card:hover .product-image {
+        transform: scale(1.05);
     }
 
     .no-image {
-        background: #edf2ef;
+        background: var(--green-100);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -67,96 +137,155 @@
     }
 
     .product-body {
-        padding: 20px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
     }
 
+    /* Category Badge */
     .category-badge {
         display: inline-block;
-        background: #e6f1eb;
-        color: #1f4d3a;
-        padding: 5px 12px;
-        border-radius: 20px;
+        background: var(--green-100);
+        color: var(--green-800);
+        padding: 6px 14px;
+        border-radius: 50px;
         font-size: 12px;
-        font-weight: 600;
-        margin-bottom: 10px;
+        font-weight: 700;
+        margin-bottom: 15px;
+        align-self: flex-start;
+        letter-spacing: 0.02em;
     }
 
+    /* Typography */
     .product-title {
-        font-size: 18px;
+        font-family: 'Fraunces', serif;
+        font-size: 20px;
         font-weight: 700;
-        color: #26352b;
+        color: var(--ink-900);
+        margin-bottom: 8px;
+        line-height: 1.4;
     }
 
     .product-description {
-        color: #727d76;
-        font-size: 14px;
-        min-height: 42px;
+        color: var(--ink-500);
+        font-size: 14.5px;
+        line-height: 1.6;
+        min-height: 45px;
+        margin-bottom: 15px;
     }
 
     .product-price {
-        color: #1f4d3a;
-        font-size: 19px;
-        font-weight: 700;
+        color: var(--green-700);
+        font-size: 22px;
+        font-weight: 800;
+        margin-bottom: 5px;
     }
 
     .product-price small {
-        color: #7b857e;
-        font-size: 12px;
-        font-weight: normal;
+        color: var(--ink-500);
+        font-size: 13px;
+        font-weight: 500;
     }
 
     .stock {
-        font-size: 13px;
-        color: #66736b;
-        margin: 12px 0;
+        font-size: 13.5px;
+        color: var(--ink-500);
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px dashed var(--line);
     }
 
+    .stock strong {
+        color: var(--ink-900);
+    }
+
+    /* Buttons */
     .btn-detail, .btn-add-cart, .btn-filter {
-        border-radius: 8px;
-        padding: 10px;
+        border-radius: 10px;
+        padding: 12px 20px;
         font-weight: 600;
         text-align: center;
         text-decoration: none;
+        font-size: 14.5px;
+        transition: all 0.28s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
     }
 
     .btn-detail {
-        border: 1px solid #1f4d3a;
-        color: #1f4d3a;
+        border: 1px solid var(--green-700);
+        color: var(--green-700);
+        background: transparent;
     }
 
     .btn-detail:hover {
-        background: #1f4d3a;
-        color: white;
+        background: var(--green-100);
+        color: var(--green-800);
+        border-color: var(--green-800);
     }
 
     .btn-add-cart, .btn-filter {
-        background: #1f4d3a;
+        background: var(--gold-500);
         color: white;
         border: none;
+        box-shadow: 0 4px 12px -4px rgba(212, 154, 74, 0.6);
     }
 
     .btn-add-cart:hover, .btn-filter:hover {
-        background: #163b2c;
+        background: var(--gold-600);
         color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px -6px rgba(183, 126, 53, 0.8);
     }
 
     .btn-add-cart:disabled {
         background: #adb8b1;
+        box-shadow: none;
+        transform: none;
     }
 
+    /* Empty State */
     .empty-box {
-        padding: 60px 20px;
+        padding: 80px 20px;
         text-align: center;
     }
 
     .empty-box i {
-        color: #aab6ae;
-        margin-bottom: 20px;
+        color: var(--green-100);
+        margin-bottom: 25px;
+        text-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
     .empty-box h4 {
-        color: #1f4d3a;
+        font-family: 'Fraunces', serif;
+        color: var(--green-800);
         font-weight: 700;
+        font-size: 24px;
+    }
+    
+    /* Alert Custom */
+    .alert {
+        border-radius: 12px;
+        border: none;
+        font-weight: 500;
+    }
+    .alert-success { background-color: var(--green-100); color: var(--green-800); }
+    .alert-danger { background-color: #fee2e2; color: #991b1b; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .catalog-header {
+            padding: 30px 20px;
+        }
+        .catalog-header h2 {
+            font-size: 26px;
+        }
+        .product-image, .no-image {
+            height: 200px;
+        }
     }
 </style>
 
@@ -169,14 +298,14 @@
 
 @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show">
-        {{ session('success') }}
+        <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 @endif
 
 @if (session('error'))
     <div class="alert alert-danger alert-dismissible fade show">
-        {{ session('error') }}
+        <i class="fa-solid fa-circle-exclamation me-2"></i> {{ session('error') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 @endif
@@ -208,9 +337,9 @@
                 </select>
             </div>
 
-            <div class="col-12">
-                <button type="submit" class="btn btn-filter">
-                    <i class="fa-solid fa-magnifying-glass me-1"></i>
+            <div class="col-12 mt-3">
+                <button type="submit" class="btn btn-filter w-100 w-md-auto px-4 py-2">
+                    <i class="fa-solid fa-magnifying-glass"></i>
                     Cari Barang
                 </button>
             </div>
@@ -218,17 +347,20 @@
     </form>
 </div>
 
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 mt-2">
     <div>
-        <h4 class="fw-bold mb-1">
+        <h4 class="fw-bold mb-1" style="font-family: 'Fraunces', serif; color: var(--green-800); font-size: 24px;">
             {{ request('kategori') ? 'Kategori: '.request('kategori') : 'Perlengkapan Camping' }}
         </h4>
-        <p class="text-secondary mb-0">
+        <p class="text-secondary mb-0" style="font-size: 15px;">
             Pilih perlengkapan yang sesuai dengan kebutuhanmu.
         </p>
     </div>
 
-    <span class="text-secondary">{{ $barang->count() }} barang</span>
+    <span class="text-secondary fw-medium bg-white px-3 py-2 rounded-pill shadow-sm" style="border: 1px solid var(--line);">
+        <i class="fa-solid fa-box me-1" style="color: var(--gold-500);"></i>
+        {{ $barang->count() }} barang
+    </span>
 </div>
 
 <div class="row g-4">
@@ -256,37 +388,39 @@
                         {{ $item->deskripsi ?? 'Perlengkapan camping berkualitas dari GearCamp.' }}
                     </p>
 
-                    <div class="product-price">
-                        Rp{{ number_format($item->harga_per_hari, 0, ',', '.') }}
-                        <small>/ hari</small>
-                    </div>
+                    <div class="mt-auto"> <!-- Mendorong konten ke bawah agar sejajar -->
+                        <div class="product-price">
+                            Rp{{ number_format($item->harga_per_hari, 0, ',', '.') }}
+                            <small>/ hari</small>
+                        </div>
 
-                    <div class="stock">
-                        @if ($item->stok > 0)
-                            <i class="fa-solid fa-box"></i>
-                            Stok tersedia: <strong>{{ $item->stok }}</strong>
-                        @else
-                            <span class="text-danger">
-                                <i class="fa-solid fa-circle-xmark"></i> Stok habis
-                            </span>
-                        @endif
-                    </div>
+                        <div class="stock">
+                            @if ($item->stok > 0)
+                                <i class="fa-solid fa-box" style="color: var(--green-700);"></i>
+                                Stok tersedia: <strong>{{ $item->stok }}</strong>
+                            @else
+                                <span class="text-danger fw-semibold">
+                                    <i class="fa-solid fa-circle-xmark"></i> Stok habis
+                                </span>
+                            @endif
+                        </div>
 
-                    <div class="d-flex gap-2">
-                        <a href="{{ route('katalog.show', $item->id) }}"
-                            class="btn-detail flex-fill">
-                            <i class="fa-solid fa-eye me-1"></i> Detail
-                        </a>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('katalog.show', $item->id) }}"
+                                class="btn-detail flex-fill">
+                                Detail
+                            </a>
 
-                        <form action="{{ route('cart.add', $item->id) }}"
-                            method="POST" class="flex-fill">
-                            @csrf
-                            <button type="submit"
-                                class="btn-add-cart w-100"
-                                {{ $item->stok <= 0 ? 'disabled' : '' }}>
-                                <i class="fa-solid fa-cart-plus"></i> Tambah
-                            </button>
-                        </form>
+                            <form action="{{ route('cart.add', $item->id) }}"
+                                method="POST" class="flex-fill">
+                                @csrf
+                                <button type="submit"
+                                    class="btn-add-cart w-100"
+                                    {{ $item->stok <= 0 ? 'disabled' : '' }}>
+                                    <i class="fa-solid fa-cart-plus"></i> Tambah
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -294,12 +428,12 @@
     @empty
         <div class="col-12">
             <div class="empty-box">
-                <i class="fa-solid fa-box-open fa-4x"></i>
+                <i class="fa-solid fa-box-open fa-4x" style="color: var(--gold-500); opacity: 0.5;"></i>
                 <h4>Barang Tidak Ditemukan</h4>
-                <p class="text-secondary">
+                <p class="text-secondary mb-4">
                     Coba ubah kata pencarian atau pilih kategori lain.
                 </p>
-                <a href="{{ url('/katalog') }}" class="btn btn-filter">
+                <a href="{{ url('/katalog') }}" class="btn btn-add-cart px-4 py-2">
                     Tampilkan Semua Barang
                 </a>
             </div>
