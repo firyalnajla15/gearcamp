@@ -8,12 +8,19 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Font Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --green: #1f4d3a;
             --green-hover: #2d634b;
             --green-light: #e5eee8;
+            --green-dark: #10271c;
+            --gold: #d49a4a;
             --background: #f7f9f7;
             --text: #26352b;
             --muted: #829087;
@@ -30,7 +37,8 @@
             margin: 0;
             background: var(--background);
             color: var(--text);
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: 'Plus Jakarta Sans', Arial, Helvetica, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
         a {
@@ -51,6 +59,7 @@
             display: flex;
             flex-direction: column;
             transition: width .25s ease, transform .25s ease;
+            box-shadow: 4px 0 24px -10px rgba(16, 39, 28, 0.3);
         }
 
         .brand {
@@ -60,9 +69,13 @@
             gap: 12px;
             padding: 0 9px 19px;
             margin-bottom: 21px;
-            border-bottom: 1px solid rgba(255, 255, 255, .16);
+            border-bottom: 1px solid rgba(255, 255, 255, .12);
             color: #fff;
             white-space: nowrap;
+            font-family: 'Fraunces', serif;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
         }
 
         .brand:hover {
@@ -76,23 +89,25 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, .13);
-            border: 1px solid rgba(255, 255, 255, .1);
+            background: rgba(255, 255, 255, .1);
+            border: 1px solid rgba(255, 255, 255, .15);
             border-radius: 12px;
-            font-size: 21px;
+            font-size: 20px;
+            color: var(--gold);
+            transition: all 0.3s ease;
         }
 
-        .brand-name {
-            font-size: 21px;
-            font-weight: 700;
-            letter-spacing: .2px;
+        .brand:hover .brand-icon {
+            background: var(--gold);
+            color: #fff;
+            transform: rotate(-5deg);
         }
 
         .menu-label {
             padding: 0 12px;
             margin: 8px 0 11px;
-            color: rgba(255, 255, 255, .55);
-            font-size: 10px;
+            color: rgba(255, 255, 255, .5);
+            font-size: 11px;
             font-weight: 700;
             letter-spacing: 1.2px;
             white-space: nowrap;
@@ -101,7 +116,7 @@
         .sidebar-menu {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 6px;
         }
 
         .sidebar-menu a {
@@ -110,13 +125,13 @@
             display: flex;
             align-items: center;
             gap: 13px;
-            padding: 11px 12px;
-            border-radius: 9px;
-            color: rgba(255, 255, 255, .78);
-            font-size: 13.5px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, .75);
+            font-size: 14px;
             font-weight: 500;
             white-space: nowrap;
-            transition: background .2s ease, color .2s ease;
+            transition: all .25s ease;
         }
 
         .sidebar-menu a i {
@@ -124,17 +139,24 @@
             width: 20px;
             text-align: center;
             font-size: 16px;
+            transition: transform .25s ease;
         }
 
         .sidebar-menu a:hover {
-            background: rgba(255, 255, 255, .09);
+            background: rgba(255, 255, 255, .08);
             color: #fff;
+            transform: translateX(3px);
+        }
+
+        .sidebar-menu a:hover i {
+            transform: scale(1.1);
         }
 
         .sidebar-menu a.active {
-            background: rgba(255, 255, 255, .16);
+            background: rgba(255, 255, 255, .15);
             color: #fff;
             font-weight: 700;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
         }
 
         .sidebar-menu a.active::before {
@@ -143,24 +165,24 @@
             left: 0;
             top: 10px;
             bottom: 10px;
-            width: 3px;
+            width: 4px;
             border-radius: 0 4px 4px 0;
-            background: #fff;
+            background: var(--gold); /* Aksen Emas */
         }
 
         .sidebar-bottom {
             margin-top: auto;
             padding-top: 18px;
-            border-top: 1px solid rgba(255, 255, 255, .16);
+            border-top: 1px solid rgba(255, 255, 255, .12);
         }
 
         .sidebar-bottom .sidebar-menu a {
-            font-size: 13px;
+            font-size: 13.5px;
         }
 
         .sidebar-menu a.logout-link:hover {
-            background: rgba(255, 255, 255, .13);
-            color: #fff;
+            background: rgba(220, 53, 69, 0.2); /* Warna merah halus saat hover logout */
+            color: #ffb3b8;
         }
 
         /* KONTEN UTAMA */
@@ -170,6 +192,7 @@
             transition: margin-left .25s ease;
         }
 
+        /* TOPBAR */
         .topbar {
             min-height: 76px;
             padding: 15px 30px;
@@ -177,8 +200,13 @@
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .topbar-left {
@@ -190,29 +218,41 @@
 
         .page-title {
             margin: 0;
-            font-size: 21px;
+            font-size: 22px;
             font-weight: 700;
-            color: var(--text);
+            color: var(--green-dark);
+            font-family: 'Fraunces', serif;
         }
 
+        /* User Chip */
         .user-chip {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             min-width: 0;
+            padding: 6px 16px 6px 6px;
+            background: #f8faf9;
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            transition: background 0.3s ease;
+        }
+
+        .user-chip:hover {
+            background: var(--green-light);
         }
 
         .user-avatar {
-            flex: 0 0 41px;
-            width: 41px;
-            height: 41px;
+            flex: 0 0 38px;
+            width: 38px;
+            height: 38px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            background: var(--green-light);
-            color: var(--green);
+            background: var(--green);
+            color: #fff;
             font-size: 16px;
+            box-shadow: 0 4px 10px -4px rgba(31, 77, 58, 0.5);
         }
 
         .user-name {
@@ -220,55 +260,69 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            font-size: 13px;
-            color: var(--text);
+            font-size: 14px;
+            color: var(--green-dark);
         }
 
         .user-role {
-            margin-top: 3px;
+            margin-top: 1px;
             color: var(--muted);
-            font-size: 11px;
+            font-size: 11.5px;
+            font-weight: 500;
         }
 
         .page-content {
-            padding: 30px;
+            padding: 35px 30px;
         }
 
+        /* Tombol Toggle */
         .menu-toggle,
         .desktop-toggle {
-            width: 39px;
-            height: 39px;
+            width: 40px;
+            height: 40px;
             align-items: center;
             justify-content: center;
-            border-radius: 9px;
+            border-radius: 10px;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
 
         .menu-toggle {
             display: none;
             background: var(--green);
             color: #fff;
-            border: 1px solid var(--green);
+            border: none;
         }
 
         .menu-toggle:hover {
-            background: var(--green-hover);
+            background: var(--green-dark);
+            transform: scale(1.05);
         }
 
         .desktop-toggle {
             display: inline-flex;
             background: #fff;
             color: var(--green);
-            border: 1px solid #e0e7e1;
+            border: 1px solid var(--border);
         }
 
         .desktop-toggle:hover {
             background: var(--green-light);
+            color: var(--green-dark);
         }
 
         .sidebar-overlay {
             display: none;
         }
+
+        /* Alert Kustom */
+        .alert {
+            border-radius: 12px;
+            border: none;
+            font-weight: 500;
+        }
+        .alert-success { background-color: var(--green-light); color: var(--green-dark); }
+        .alert-danger { background-color: #fee2e2; color: #991b1b; }
 
         /* SIDEBAR DESKTOP DIPERKECIL */
         body.sidebar-collapsed .sidebar {
@@ -301,7 +355,7 @@
 
         body.sidebar-collapsed .sidebar-menu a i {
             flex-basis: 22px;
-            font-size: 17px;
+            font-size: 18px;
         }
 
         body.sidebar-collapsed .sidebar-menu a.active::before {
@@ -344,7 +398,7 @@
 
             body.sidebar-collapsed .sidebar-menu a {
                 justify-content: flex-start;
-                padding: 11px 12px;
+                padding: 11px 14px;
             }
 
             body.sidebar-collapsed .sidebar-menu a.active::before {
@@ -364,15 +418,16 @@
                 position: fixed;
                 inset: 0;
                 z-index: 1040;
-                background: rgba(18, 30, 22, .45);
+                background: rgba(16, 39, 28, .6);
+                backdrop-filter: blur(2px);
             }
 
             .topbar {
-                padding: 14px 18px;
+                padding: 14px 20px;
             }
 
             .page-content {
-                padding: 22px 18px;
+                padding: 24px 20px;
             }
         }
 
@@ -380,6 +435,7 @@
             .topbar {
                 min-height: 68px;
                 gap: 10px;
+                padding: 12px 15px;
             }
 
             .topbar-left {
@@ -387,17 +443,27 @@
             }
 
             .page-title {
-                font-size: 18px;
+                font-size: 19px;
+            }
+
+            .user-chip {
+                padding: 4px;
+                border: none;
+                background: transparent;
+            }
+            
+            .user-chip:hover {
+                background: transparent;
             }
 
             .user-avatar {
-                width: 36px;
-                height: 36px;
-                flex-basis: 36px;
+                width: 38px;
+                height: 38px;
+                flex-basis: 38px;
             }
 
             .page-content {
-                padding: 20px 14px;
+                padding: 20px 15px;
             }
         }
     </style>
@@ -413,7 +479,7 @@
 
         <a href="{{ route('user.dashboard') }}" class="brand">
             <div class="brand-icon">
-                <i class="fa-solid fa-campground"></i>
+                <i class="fa-solid fa-mountain-sun"></i>
             </div>
             <span class="brand-name">GearCamp</span>
         </a>
@@ -505,7 +571,7 @@
                     <i class="fa-solid fa-user"></i>
                 </div>
 
-                <div class="d-none d-sm-block">
+                <div class="d-none d-sm-block pe-2">
                     <div class="user-name fw-bold">
                         {{ Auth::user()->name ?? 'Pengguna' }}
                     </div>
@@ -518,14 +584,14 @@
 
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
+                    <i class="fa-solid fa-circle-check me-2"></i> {{ session('success') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
                 </div>
             @endif
 
             @if (session('error'))
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ session('error') }}
+                    <i class="fa-solid fa-circle-exclamation me-2"></i> {{ session('error') }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
                 </div>
             @endif
