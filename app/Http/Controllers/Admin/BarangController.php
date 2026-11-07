@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Barang;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -12,12 +13,8 @@ class BarangController extends Controller
 {
     public function index(Request $request)
     {
-        $kategori = Barang::select('kategori')
-            ->whereNotNull('kategori')
-            ->where('kategori', '!=', '')
-            ->distinct()
-            ->orderBy('kategori')
-            ->pluck('kategori');
+        $kategori = Kategori::orderBy('nama_kategori')
+            ->pluck('nama_kategori');
 
         $query = Barang::latest();
 
@@ -41,14 +38,16 @@ class BarangController extends Controller
 
     public function create()
     {
-        return view('admin.barang.create');
+        $kategori = Kategori::orderBy('nama_kategori')->get();
+
+        return view('admin.barang.create', compact('kategori'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'nama_barang' => 'required|string|max:255',
-            'kategori' => 'required|string|max:255',
+            'kategori' => 'required|string|max:255|exists:kategoris,nama_kategori',
             'deskripsi' => 'nullable|string',
             'harga_per_hari' => 'required|numeric|min:0',
             'stok' => 'required|integer|min:0',
@@ -74,14 +73,16 @@ class BarangController extends Controller
 
     public function edit(Barang $barang)
     {
-        return view('admin.barang.edit', compact('barang'));
+        $kategori = Kategori::orderBy('nama_kategori')->get();
+
+        return view('admin.barang.edit', compact('barang', 'kategori'));
     }
 
     public function update(Request $request, Barang $barang)
     {
         $validated = $request->validate([
             'nama_barang' => 'required|string|max:255',
-            'kategori' => 'required|string|max:255',
+            'kategori' => 'required|string|max:255|exists:kategoris,nama_kategori',
             'deskripsi' => 'nullable|string',
             'harga_per_hari' => 'required|numeric|min:0',
             'stok' => 'required|integer|min:0',
@@ -89,11 +90,9 @@ class BarangController extends Controller
         ]);
 
         if ($request->hasFile('foto')) {
-            // Simpan foto baru terlebih dahulu.
             $fotoBaru = $request->file('foto')
                 ->store('barang', 'public');
 
-            // Hapus foto lama jika merupakan file lokal.
             if (
                 $barang->foto &&
                 !Str::startsWith($barang->foto, ['http://', 'https://'])

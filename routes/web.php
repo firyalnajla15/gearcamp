@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Admin\BarangController;
+use App\Http\Controllers\Admin\KategoriController;
 
 // HALAMAN PUBLIK
 Route::get('/', function () {
@@ -51,6 +52,7 @@ Route::middleware('guest')->group(function () {
 // LOGOUT
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
+
 // KHUSUS ADMIN
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
@@ -61,7 +63,11 @@ Route::middleware(['auth', 'role:admin'])
             ->name('dashboard');
 
         Route::resource('/barang', BarangController::class);
+
+        Route::resource('/kategori', KategoriController::class)
+            ->except(['show']);
     });
+
 
 // KHUSUS USER
 Route::middleware(['auth', 'role:user'])->prefix('user')->name('user.')->group(function () {

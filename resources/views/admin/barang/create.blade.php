@@ -166,41 +166,23 @@
                         <div class="col-md-6">
                             <label class="form-label">Kategori</label>
                             <select name="kategori" class="form-select @error('kategori') is-invalid @enderror" required>
+
                                 <option value="" disabled {{ old('kategori') ? '' : 'selected' }}>
                                     -- Pilih Kategori Barang --
                                 </option>
 
-                                <option value="Tenda" {{ old('kategori') == 'Tenda' ? 'selected' : '' }}>
-                                    Tenda
-                                </option>
+                                @foreach ($kategori as $item)
+                                    <option value="{{ $item->nama_kategori }}"
+                                        {{ old('kategori') == $item->nama_kategori ? 'selected' : '' }}>
+                                        {{ $item->nama_kategori }}
+                                    </option>
+                                @endforeach
 
-                                <option value="Tas Carrier" {{ old('kategori') == 'Tas Carrier' ? 'selected' : '' }}>
-                                    Tas Carrier
-                                </option>
-
-                                <option value="Perlengkapan Tidur"
-                                    {{ old('kategori') == 'Perlengkapan Tidur' ? 'selected' : '' }}>
-                                    Perlengkapan Tidur
-                                </option>
-
-                                <option value="Alat Masak" {{ old('kategori') == 'Alat Masak' ? 'selected' : '' }}>
-                                    Alat Masak
-                                </option>
-
-                                <option value="Penerangan" {{ old('kategori') == 'Penerangan' ? 'selected' : '' }}>
-                                    Penerangan
-                                </option>
-
-                                <option value="Perlengkapan Hiking"
-                                    {{ old('kategori') == 'Perlengkapan Hiking' ? 'selected' : '' }}>
-                                    Perlengkapan Hiking
-                                </option>
-
-                                <option value="Aksesoris Camping"
-                                    {{ old('kategori') == 'Aksesoris Camping' ? 'selected' : '' }}>
-                                    Aksesoris Camping
-                                </option>
                             </select>
+
+                            @error('kategori')
+                                <div class="invalid-feedback fw-semibold">{{ $message }}</div>
+                            @enderror
 
                             @error('kategori')
                                 <div class="invalid-feedback fw-semibold">{{ $message }}</div>

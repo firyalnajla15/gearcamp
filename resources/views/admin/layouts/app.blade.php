@@ -457,7 +457,8 @@
                 <span>Kelola Barang</span>
             </a>
 
-            <a href="#" class="{{ request()->routeIs('admin.kategori*') ? 'active' : '' }}">
+            <a href="{{ route('admin.kategori.index') }}"
+                class="sidebar-link {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-tags"></i>
                 <span>Kelola Kategori</span>
             </a>
