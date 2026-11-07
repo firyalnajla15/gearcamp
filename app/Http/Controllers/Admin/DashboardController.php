@@ -11,10 +11,11 @@ class DashboardController extends Controller
     {
         // Statistik barang
         $totalBarang = DB::table('barang')->count();
+
         $totalStok = DB::table('barang')->sum('stok');
 
         $stokHabis = DB::table('barang')
-            ->where('stok', 0)
+            ->where('stok', '<=', 0)
             ->count();
 
         $stokMenipis = DB::table('barang')

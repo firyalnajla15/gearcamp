@@ -18,6 +18,16 @@
             $fotoUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($foto);
         }
     }
+
+    $daftarKategori = [
+        'Tenda',
+        'Tas Carrier',
+        'Perlengkapan Tidur',
+        'Alat Masak',
+        'Penerangan',
+        'Perlengkapan Hiking',
+        'Aksesoris Camping',
+    ];
 @endphp
 
 <style>
@@ -192,12 +202,26 @@
 
                     <div class="col-md-6">
                         <label class="form-label">Kategori</label>
-                        <input type="text"
-                               name="kategori"
-                               class="form-control @error('kategori') is-invalid @enderror"
-                               value="{{ old('kategori', $barang->kategori) }}"
-                               placeholder="Contoh: Tenda, Tas, Alat Masak"
-                               required>
+                        <select name="kategori"
+                                class="form-select @error('kategori') is-invalid @enderror"
+                                required>
+
+                            <option value="" disabled>-- Pilih Kategori Barang --</option>
+
+                            @foreach ($daftarKategori as $kategori)
+                                <option value="{{ $kategori }}"
+                                    {{ old('kategori', $barang->kategori) == $kategori ? 'selected' : '' }}>
+                                    {{ $kategori }}
+                                </option>
+                            @endforeach
+
+                            @if (!in_array(old('kategori', $barang->kategori), $daftarKategori))
+                                <option value="{{ old('kategori', $barang->kategori) }}" selected>
+                                    {{ old('kategori', $barang->kategori) }} (Kategori sebelumnya)
+                                </option>
+                            @endif
+
+                        </select>
 
                         @error('kategori')
                             <div class="invalid-feedback fw-semibold">{{ $message }}</div>
@@ -274,7 +298,7 @@
 
                         <small class="text-muted d-block mt-2" style="font-size: 12.5px;">
                             <i class="fa-solid fa-circle-info me-1"></i>
-                            Biarkan kosong jika tidak ingin mengganti foto. Format: JPG, PNG, WEBP. Maksimal 2 MB.
+                            Biarkan kosong jika tidak ingin mengganti foto. Format: JPG, JPEG, PNG, WEBP. Maksimal 2 MB.
                         </small>
 
                         @error('foto')
