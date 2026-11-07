@@ -15,6 +15,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
 
+    <!-- Library SweetAlert2 untuk Pop-up Cantik -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         :root {
             --green-900: #10271c;
@@ -504,11 +507,13 @@
 
                                     <!-- DELETE -->
                                     <div class="col-12 col-md-1 text-md-end mt-3 mt-md-0">
-                                        <form action="{{ route('cart.remove', $item['id']) }}" method="POST">
+                                        <form action="{{ route('cart.remove', $item['id']) }}" method="POST" id="delete-form-{{ $item['id'] }}">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn-delete ms-auto"
-                                                onclick="return confirm('Hapus barang dari keranjang?')">
+                                            <!-- Menghapus onclick bawaan dan menggantinya dengan class btn-delete-confirm -->
+                                            <button type="button" class="btn-delete ms-auto btn-delete-confirm"
+                                                data-form-id="delete-form-{{ $item['id'] }}"
+                                                data-item-name="{{ $item['nama_barang'] }}">
                                                 <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
@@ -520,11 +525,11 @@
 
                         <!-- CLEAR CART -->
                         <div class="text-end mt-2">
-                            <form action="{{ route('cart.clear') }}" method="POST" class="d-inline">
+                            <form action="{{ route('cart.clear') }}" method="POST" class="d-inline" id="clear-cart-form">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger btn-sm rounded-3 fw-semibold px-3 py-2"
-                                    onclick="return confirm('Kosongkan semua keranjang?')">
+                                <!-- Menghapus onclick bawaan dan menggantinya dengan class btn-clear-confirm -->
+                                <button type="button" class="btn btn-outline-danger btn-sm rounded-3 fw-semibold px-3 py-2 btn-clear-confirm">
                                     <i class="fa-solid fa-trash-can me-1"></i>
                                     Kosongkan Keranjang
                                 </button>
@@ -599,6 +604,64 @@
             </p>
         </div>
     </footer>
+
+    <!-- SCRIPT UNTUK SWEETALERT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Konfigurasi Tema SweetAlert (Menyesuaikan warna hijau GearCamp)
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success mx-2 px-4 py-2', // Tombol OK
+                    cancelButton: 'btn btn-outline-secondary mx-2 px-4 py-2' // Tombol Cancel
+                },
+                buttonsStyling: false, // Mematikan styling bawaan SweetAlert agar pakai class Bootstrap
+                confirmButtonColor: '#1f4d3a',
+            });
+
+            // Logika untuk Tombol Hapus Per Item
+            const deleteButtons = document.querySelectorAll('.btn-delete-confirm');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const formId = this.getAttribute('data-form-id');
+                    const itemName = this.getAttribute('data-item-name');
+                    
+                    swalWithBootstrapButtons.fire({
+                        title: 'Hapus Barang?',
+                        text: `Apakah kamu yakin ingin menghapus "${itemName}" dari keranjang?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Hapus',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById(formId).submit();
+                        }
+                    });
+                });
+            });
+
+            // Logika untuk Tombol Kosongkan Keranjang
+            const clearButton = document.querySelector('.btn-clear-confirm');
+            if (clearButton) {
+                clearButton.addEventListener('click', function () {
+                    swalWithBootstrapButtons.fire({
+                        title: 'Kosongkan Keranjang?',
+                        text: "Semua barang akan dihapus dari keranjangmu.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Kosongkan',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('clear-cart-form').submit();
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 
 </body>
 
