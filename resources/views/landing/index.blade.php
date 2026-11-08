@@ -11,7 +11,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap"
+        rel="stylesheet">
 
     <style>
         :root {
@@ -86,7 +88,8 @@
             transition: color .25s ease;
         }
 
-        .nav-link:hover, .nav-link.active {
+        .nav-link:hover,
+        .nav-link.active {
             color: #fff !important;
         }
 
@@ -108,7 +111,8 @@
             transition: all .3s ease;
         }
 
-        .btn-login:hover, .btn-login[aria-expanded="true"] {
+        .btn-login:hover,
+        .btn-login[aria-expanded="true"] {
             background: #fff;
             color: var(--green-800);
             border-color: #fff;
@@ -174,8 +178,15 @@
         }
 
         @keyframes riseIn {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hero h1 {
@@ -528,13 +539,13 @@
                 background: var(--green-800);
                 padding: 16px 0;
             }
-            
+
             .navbar-collapse {
                 background: var(--green-800);
                 padding: 16px;
                 border-radius: 12px;
                 margin-top: 12px;
-                border: 1px solid rgba(255,255,255,.1);
+                border: 1px solid rgba(255, 255, 255, .1);
             }
 
             .nav-link {
@@ -551,7 +562,7 @@
                 padding-top: 14px;
                 gap: 2px;
             }
-            
+
             .hero-features {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -578,7 +589,7 @@
             .hero p {
                 font-size: 16px;
             }
-            
+
             .hero-features {
                 grid-template-columns: 1fr;
             }
@@ -600,6 +611,7 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
+
             *,
             *::before,
             *::after {
@@ -620,10 +632,8 @@
                 GearCamp
             </a>
 
-            <button class="navbar-toggler border-0 shadow-none" type="button"
-                data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false"
-                aria-label="Buka navigasi">
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Buka navigasi">
                 <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
             </button>
 
@@ -654,25 +664,14 @@
                         </a>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <button type="button" class="btn-login"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Login
-                        </button>
 
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <a class="dropdown-item" href="{{ url('/login/user') }}">
-                                    <i class="fa-solid fa-user me-2"></i>Login User
-                                </a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ url('/login/admin') }}">
-                                    <i class="fa-solid fa-user-shield me-2"></i>Login Admin
-                                </a>
-                            </li>
-                        </ul>
+                    <li class="nav-item">
+                        <a href="{{ route('login') }}" class="btn-login">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            Login
+                        </a>
                     </li>
+
                 </ul>
             </div>
         </div>
@@ -781,10 +780,8 @@
             <div class="row align-items-center">
 
                 <div class="col-md-6">
-                    <img
-                        src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1000&q=80"
-                        class="about-img"
-                        alt="Camping GearCamp">
+                    <img src="https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=1000&q=80"
+                        class="about-img" alt="Camping GearCamp">
                 </div>
 
                 <div class="col-md-6">
@@ -870,4 +867,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

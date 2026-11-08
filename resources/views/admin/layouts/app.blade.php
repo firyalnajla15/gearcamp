@@ -77,6 +77,7 @@
             font-family: 'Fraunces', serif;
             font-size: 22px;
             font-weight: 700;
+            letter-spacing: 0.02em;
         }
 
         .brand:hover {
@@ -95,6 +96,13 @@
             border-radius: 12px;
             font-size: 20px;
             color: var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        .brand:hover .brand-icon {
+            background: var(--gold);
+            color: #fff;
+            transform: rotate(-5deg);
         }
 
         .menu-label {
@@ -133,6 +141,7 @@
             width: 20px;
             text-align: center;
             font-size: 16px;
+            transition: transform .25s ease;
         }
 
         .sidebar-menu a:hover {
@@ -141,10 +150,15 @@
             transform: translateX(3px);
         }
 
+        .sidebar-menu a:hover i {
+            transform: scale(1.1);
+        }
+
         .sidebar-menu a.active {
             background: rgba(255, 255, 255, .15);
             color: #fff;
             font-weight: 700;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
         }
 
         .sidebar-menu a.active::before {
@@ -184,8 +198,9 @@
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            background: rgba(255, 255, 255, .85);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
@@ -207,6 +222,7 @@
             font-family: 'Fraunces', serif;
         }
 
+        /* User Chip */
         .user-chip {
             display: flex;
             align-items: center;
@@ -215,6 +231,11 @@
             background: #f8faf9;
             border: 1px solid var(--border);
             border-radius: 50px;
+            transition: background 0.3s ease;
+        }
+
+        .user-chip:hover {
+            background: var(--green-light);
         }
 
         .user-avatar {
@@ -228,6 +249,7 @@
             background: var(--green);
             color: #fff;
             font-size: 16px;
+            box-shadow: 0 4px 10px -4px rgba(31, 77, 58, 0.5);
         }
 
         .user-name {
@@ -250,7 +272,7 @@
             padding: 35px 30px;
         }
 
-        /* TOGGLE */
+        /* Tombol Toggle */
         .menu-toggle,
         .desktop-toggle {
             width: 40px;
@@ -259,6 +281,7 @@
             justify-content: center;
             border-radius: 10px;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
 
         .menu-toggle {
@@ -268,6 +291,11 @@
             border: none;
         }
 
+        .menu-toggle:hover {
+            background: var(--green-dark);
+            transform: scale(1.05);
+        }
+
         .desktop-toggle {
             display: inline-flex;
             background: #fff;
@@ -275,26 +303,23 @@
             border: 1px solid var(--border);
         }
 
+        .desktop-toggle:hover {
+            background: var(--green-light);
+            color: var(--green-dark);
+        }
+
         .sidebar-overlay {
             display: none;
         }
 
-        /* ALERT */
+        /* Alert Kustom */
         .alert {
             border-radius: 12px;
             border: none;
             font-weight: 500;
         }
-
-        .alert-success {
-            background: var(--green-light);
-            color: var(--green-dark);
-        }
-
-        .alert-danger {
-            background: #fee2e2;
-            color: #991b1b;
-        }
+        .alert-success { background-color: var(--green-light); color: var(--green-dark); }
+        .alert-danger { background-color: #fee2e2; color: #991b1b; }
 
         /* SIDEBAR COLLAPSED */
         body.sidebar-collapsed .sidebar {
@@ -385,7 +410,7 @@
                 position: fixed;
                 inset: 0;
                 z-index: 1040;
-                background: rgba(16, 39, 28, .6);
+                background: rgba(16, 39, 28, .6); 
             }
 
             .topbar {
@@ -416,6 +441,16 @@
                 padding: 4px;
                 border: none;
                 background: transparent;
+            }
+            
+            .user-chip:hover {
+                background: transparent;
+            }
+
+            .user-avatar {
+                width: 38px;
+                height: 38px;
+                flex-basis: 38px;
             }
 
             .page-content {
@@ -452,7 +487,7 @@
         <div class="menu-label">MANAJEMEN</div>
 
         <nav class="sidebar-menu" aria-label="Menu manajemen">
-            <a href="{{ route('admin.barang.index') }}">
+            <a href="{{ route('admin.barang.index') }}" class="{{ request()->routeIs('admin.barang.*') ? 'active' : '' }}">
                 <i class="fas fa-box"></i>
                 <span>Kelola Barang</span>
             </a>
@@ -463,12 +498,14 @@
                 <span>Kelola Kategori</span>
             </a>
 
-            <a href="#" class="{{ request()->routeIs('admin.transaksi*') ? 'active' : '' }}">
+            <a href="{{ route('admin.transaksi.index') }}"
+                class="{{ request()->routeIs('admin.transaksi.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-receipt"></i>
                 <span>Kelola Transaksi</span>
             </a>
 
-            <a href="#" class="{{ request()->routeIs('admin.users*') ? 'active' : '' }}">
+            <a href="{{ route('admin.pengguna.index') }}"
+                class="sidebar-link {{ request()->routeIs('admin.pengguna.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-users"></i>
                 <span>Kelola Pengguna</span>
             </a>
@@ -477,7 +514,8 @@
         <div class="menu-label">INFORMASI</div>
 
         <nav class="sidebar-menu" aria-label="Menu informasi">
-            <a href="#" class="{{ request()->routeIs('admin.laporan*') ? 'active' : '' }}">
+            <a href="{{ route('admin.laporan.index') }}"
+                class="sidebar-link {{ request()->routeIs('admin.laporan.*') ? 'active' : '' }}">
                 <i class="fa-solid fa-chart-line"></i>
                 <span>Laporan & Statistik</span>
             </a>

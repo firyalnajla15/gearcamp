@@ -9,66 +9,62 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // HALAMAN LOGIN ADMIN
-    public function showAdminLogin()
+    // SATU HALAMAN LOGIN UNTUK ADMIN DAN USER
+    public function showLogin(Request $request)
     {
-        return view('auth.login-admin');
+        return view('auth.login', [
+            'mode' => $request->query('mode', 'user'),
+        ]);
     }
 
-    // PROSES LOGIN ADMIN
-    public function loginAdmin(Request $request)
+    // PROSES LOGIN BERDASARKAN MODE YANG DIPILIH
+    public function login(Request $request)
     {
-        $credentials = $request->validate([
+        $data = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
+            'role' => ['required', 'in:admin,user'],
         ]);
 
-        if (Auth::attempt([
-            'email' => $credentials['email'],
-            'password' => $credentials['password'],
-            'role' => 'admin',
-        ])) {
-            $request->session()->regenerate();
+        $user = User::where('email', $data['email'])->first();
 
-            return redirect()->route('admin.dashboard');
+        // Periksa email dan password
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            return back()
+                ->withErrors([
+                    'email' => 'Email atau password salah.',
+                ])
+                ->withInput($request->only('email', 'role'));
         }
 
-        return back()
-            ->withErrors([
-                'email' => 'Email atau password salah, atau akun ini bukan admin.',
-            ])
-            ->onlyInput('email');
-    }
-
-    // HALAMAN LOGIN USER
-    public function showUserLogin()
-    {
-        return view('auth.login-user');
-    }
-
-    // PROSES LOGIN USER
-    public function loginUser(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
-
-        if (Auth::attempt([
-            'email' => $credentials['email'],
-            'password' => $credentials['password'],
-            'role' => 'user',
-        ])) {
-            $request->session()->regenerate();
-
-            return redirect()->intended(route('user.dashboard'));
+        // Pastikan role akun sesuai dengan mode login
+        if ($user->role !== $data['role']) {
+            return back()
+                ->withErrors([
+                    'email' => 'Akun ini tidak memiliki akses sebagai ' .
+                        ($data['role'] === 'admin' ? 'Admin.' : 'User.'),
+                ])
+                ->withInput($request->only('email', 'role'));
         }
 
-        return back()
-            ->withErrors([
-                'email' => 'Email atau password salah, atau akun ini bukan user.',
-            ])
-            ->onlyInput('email');
+        // Periksa status akun user
+        if ($user->role === 'user' && $user->status !== 'aktif') {
+            return back()
+                ->withErrors([
+                    'email' => 'Akun kamu sedang diblokir. Silakan hubungi admin GearCamp.',
+                ])
+                ->withInput($request->only('email', 'role'));
+        }
+
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        // Arahkan sesuai role
+        if ($user->role === 'admin') {
+            return redirect()->intended(route('admin.dashboard'));
+        }
+
+        return redirect()->intended(route('user.dashboard'));
     }
 
     // HALAMAN REGISTER USER
@@ -77,7 +73,6 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-   
     // PROSES REGISTER USER
     public function register(Request $request)
     {
@@ -92,13 +87,13 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => 'user',
+            'status' => 'aktif',
         ]);
 
         return redirect()
-            ->route('login.user')
+            ->route('login', ['mode' => 'user'])
             ->with('success', 'Pendaftaran berhasil! Silakan login menggunakan akun yang sudah kamu daftarkan.');
     }
-
 
     // LOGOUT
     public function logout(Request $request)
@@ -108,6 +103,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login.user');
+        return redirect()->route('login');
     }
 }
